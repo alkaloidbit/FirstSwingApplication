@@ -1,7 +1,9 @@
 package Views;
 
+import DAO.AuthorDAO;
 import DAO.DocumentDAO;
 import DAO.EditionDAO;
+import Models.Author;
 import Models.Document;
 import Models.Edition;
 
@@ -34,8 +36,12 @@ public class DocumentsSearchPage extends JFrame {
     private JComboBox<Edition> cbEdtion;
     private JLabel lblAuteur;
     private JComboBox cbAuteur;
+    private JPanel pAuthor;
     private JTextField tfAuthor;
+    private JButton btnAuthor;
+    private JPanel pEdition;
     private JTextField tfEdition;
+    private JButton btnEdition;
 
     public DocumentsSearchPage(){
 
@@ -67,6 +73,13 @@ public class DocumentsSearchPage extends JFrame {
         // Injection dans le combobox
         for(Edition ed: editionsList){
             cbEdtion.addItem(ed);
+        }
+        // Récupération des auteurs pour le comboBox
+        AuthorDAO authorDAO = new AuthorDAO();
+        ArrayList<Author> authorList = authorDAO.findAll();
+        // Injection dans le combobox
+        for(Author aut: authorList){
+            cbAuteur.addItem(aut);
         }
 
 
@@ -143,6 +156,28 @@ public class DocumentsSearchPage extends JFrame {
             }
         });
 
+        btnAuthor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Author authorView = new Author();
+                String[] authorNames = tfAuthor.getText().split(" ");
+                authorView.setSurname(authorNames[0]);
+                authorView.setName(authorNames[1]);
+                AuthorDAO authorDAO1 = new AuthorDAO();
+                authorDAO1.create(authorView);
+                
+            }
+        });
+        btnEdition.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Edition editionView = new Edition();
+                editionView.setName(tfEdition.getText());
+                EditionDAO editionDAO1 = new EditionDAO();
+                editionDAO1.create(editionView);
+
+            }
+        });
     }
     // Fonction qui permet de les récupérer les valeurs de champs afin de les envoyer vers la BDD
     public Document getTextFieldsValues(){
