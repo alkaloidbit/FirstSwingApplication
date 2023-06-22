@@ -1,5 +1,6 @@
 package DAO;
 
+import Models.Document;
 import Models.User;
 
 import java.sql.*;
@@ -66,6 +67,30 @@ public class UserDAO extends DAO<User> {
             return true;
         }
         return false;
+    }
+    public ArrayList<User> findNameWithParam(String searchParam) {
+        List<User> users = new ArrayList<>();
+        try {
+            ResultSet results = connect
+                    .createStatement()
+                    .executeQuery(
+                            "SELECT * FROM user WHERE first_name LIKE '%" + searchParam + "%' OR last_name LIKE '%" + searchParam +"%'" 
+                    );
+            while ( results.next() ) {
+                User user = new User();
+                user.setId_user(results.getInt("id_user"));
+                user.setLast_name(results.getString("last_name"));
+                user.setFirst_name(results.getString("first_name"));
+                user.setIs_admin(results.getInt("is_admin"));
+                user.setPassword(results.getString("password"));
+                user.setEmail(results.getString("email"));
+                users.add(user);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (ArrayList<User>) users;
     }
     @Override
     public ArrayList<User> findAll() {

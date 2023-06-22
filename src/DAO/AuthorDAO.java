@@ -1,7 +1,6 @@
 package DAO;
 
 import Models.Author;
-import Models.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,8 +20,8 @@ public class AuthorDAO extends DAO<Author>{
             while ( results.next() ) {
                 Author author = new Author();
                 author.setId_author(results.getInt("id_author"));
-                author.setName(results.getString("name"));
-                author.setSurname(results.getString("surname"));
+                author.setLast_name(results.getString("last_name"));
+                author.setFirst_name(results.getString("first_name"));
                 return author;
             }
 
@@ -44,8 +43,8 @@ public class AuthorDAO extends DAO<Author>{
             while ( results.next() ) {
                 Author author = new Author();
                 author.setId_author(results.getInt("id_author"));
-                author.setName(results.getString("name"));
-                author.setSurname(results.getString("surname"));
+                author.setLast_name(results.getString("last_name"));
+                author.setFirst_name(results.getString("first_name"));
                 authors.add(author);
             }
 
@@ -59,10 +58,10 @@ public class AuthorDAO extends DAO<Author>{
     public int create(Author author) {
         try {
             PreparedStatement prepare = connect
-                    .prepareStatement("INSERT INTO author (name, surname) VALUES(?, ?)");
+                    .prepareStatement("INSERT INTO author (last_name, first_name) VALUES(?, ?)");
 
-            prepare.setString(1, author.getName());
-            prepare.setString(2, author.getSurname());
+            prepare.setString(1, author.getLast_name());
+            prepare.setString(2, author.getFirst_name());
             return prepare.executeUpdate();
 
         } catch (SQLException e) {
@@ -75,10 +74,10 @@ public class AuthorDAO extends DAO<Author>{
     public int update(Author author) {
         try {
             PreparedStatement prepare = connect
-                    .prepareStatement("UPDATE author SET name = ?, surname = ? WHERE id_author = ?");
+                    .prepareStatement("UPDATE author SET last_name = ?, first_name = ? WHERE id_author = ?");
 
-            prepare.setString(2, author.getName());
-            prepare.setString(2, author.getSurname());
+            prepare.setString(2, author.getLast_name());
+            prepare.setString(2, author.getFirst_name());
             prepare.setInt(6, author.getId_author());
             return prepare.executeUpdate();
 

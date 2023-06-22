@@ -35,7 +35,7 @@ public class Document {
     }
 
     public int getPages_nbr() {
-        return pages_nbr;
+        return this.pages_nbr;
     }
 
     public void setPages_nbr(int pages_nbr) {

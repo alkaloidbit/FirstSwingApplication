@@ -1,6 +1,8 @@
 package Views;
 
 import DAO.UserDAO;
+
+import Models.LoggedUser;
 import Models.User;
 
 import javax.swing.*;
@@ -35,10 +37,20 @@ public class LoginPage extends JFrame {
                     infoLoginLabel.setText("Utilisateur inconnu");
                 }
                 else{
-                    infoLoginLabel.setText("Bienvenue");
+                    User userLogged = userDAO.findByEmail(userEmail);
+                    infoLoginLabel.setText("Bienvenue "+userLogged.getFirst_name()+ " " + userLogged.getLast_name());
+                    /* LoggedUser loggedUser = new LoggedUser();
+                    loggedUser.logUser(userLogged);
+                    LoggedUser lu = new LoggedUser();
+                    System.out.println(lu.getLogUser().getFirst_name()); */
+                    if(userLogged.getIs_admin() == 1){
+                        DocumentsSearchPage documentsSearchPage = new DocumentsSearchPage();
+                    }
+                    else{
+                        DocumentsSearchPageBasic documentsSearchPage = new DocumentsSearchPageBasic();
+                    }
+
                 }
-
-
             }
         });
     }

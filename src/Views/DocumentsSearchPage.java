@@ -3,14 +3,15 @@ package Views;
 import DAO.AuthorDAO;
 import DAO.DocumentDAO;
 import DAO.EditionDAO;
+import DAO.UserDAO;
 import Models.Author;
 import Models.Document;
 import Models.Edition;
+import Models.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class DocumentsSearchPage extends JFrame {
@@ -42,6 +43,34 @@ public class DocumentsSearchPage extends JFrame {
     private JPanel pEdition;
     private JTextField tfEdition;
     private JButton btnEdition;
+    private JTabbedPane tpMainFrame;
+    private JPanel pUser1;
+    private JLabel lblUserSearch;
+    private JTextField tfUserSearch;
+    private JButton btnUserSearch;
+    private JTable tbUsers;
+    private JPanel pUser2;
+    private JLabel lblUserFirstName;
+    private JTextField tfUserFirstName;
+    private JLabel lblUserLastName;
+    private JTextField tfUserLastName;
+    private JLabel lblUserId;
+    private JLabel lblUserIdValue;
+    private JLabel lblUserEmail;
+    private JLabel lblUserPass;
+    private JLabel lblUserAdmin;
+    private JTextField tfEmail;
+    private JTextField tfUserPass;
+    private JComboBox cbAdmin;
+    private JPanel pUser3;
+    private JButton btnUserCreate;
+    private JButton btnUserUpdate;
+    private JButton btnUserClear;
+    private JButton btnUserDel;
+    private JPanel pDoc1;
+    private JPanel pDoc2;
+    private JPanel pDoc3;
+    private JPanel pUser;
 
     public DocumentsSearchPage(){
 
@@ -50,6 +79,7 @@ public class DocumentsSearchPage extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
         setContentPane(panDocList);
+        /****************************************************************************** DOCUMENTS **********************************************************************/
         // Récupération du critère de recherche
         String SearchParam = tfDocSearch.getText();
         // Entêtes de la table d'affichage des données
@@ -67,118 +97,240 @@ public class DocumentsSearchPage extends JFrame {
             model.addRow(new Object[]{doc.getTitle(), doc.getPages_nbr(), doc.getYear()});
         }
 
-        // Récupération des éditions pour le comboBox
-        EditionDAO editionDAO = new EditionDAO();
-        ArrayList<Edition> editionsList = editionDAO.findAll();
-        // Injection dans le combobox
-        for(Edition ed: editionsList){
-            cbEdtion.addItem(ed);
-        }
-        // Récupération des auteurs pour le comboBox
-        AuthorDAO authorDAO = new AuthorDAO();
-        ArrayList<Author> authorList = authorDAO.findAll();
-        // Injection dans le combobox
-        for(Author aut: authorList){
-            cbAuteur.addItem(aut);
-        }
+            // Récupération des éditions pour le comboBox
+            EditionDAO editionDAO = new EditionDAO();
+            ArrayList<Edition> editionsList = editionDAO.findAll();
+            // Injection dans le combobox
+            for (Edition ed : editionsList) {
+                cbEdtion.addItem(ed);
+            }
+            // Récupération des auteurs pour le comboBox
+            AuthorDAO authorDAO = new AuthorDAO();
+            ArrayList<Author> authorList = authorDAO.findAll();
+            // Injection dans le combobox
+            for (Author aut : authorList) {
+                cbAuteur.addItem(aut);
+            }
+
+            // Chercher par titre d'un document
+            btnDocSearch.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    int rowCount = model.getRowCount();
+                    for (int i = rowCount - 1; i >= 0; i--) {
+                        model.removeRow(i);
+                    }
+                    String searchParam = tfDocSearch.getText();
+                    ArrayList<Document> documentsResult = documentDAO.findTitleWithParam(searchParam);
+                    for (Document doc : documentsResult) {
+                        model.addRow(new Object[]{doc.getTitle(), doc.getPages_nbr(), doc.getYear()});
+                    }
+                }
+            });
+
+            // Créer document
+            btnDocCreate.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Document document = getTextFieldsValues();
+                    if (document != null) {
+                        DocumentDAO documentDAO1 = new DocumentDAO();
+                        documentDAO1.create(document);
+                    } else {
+                        lblInfo.setText("Informations incomplètes");
+                    }
+                    refreshListDocuments(model, documentDAO);
+                }
+            });
+            // Mettre à jour documents
+            btnDocUpdate.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Document document = getTextFieldsValues();
+                    if (document == null) {
+                        lblInfo.setText("Informations incomplètes");
+                    } else if (document.getId_document() == 0) {
+                        lblInfo.setText("L'id n'est pas renseigné");
+                    } else {
+                        DocumentDAO documentDAO1 = new DocumentDAO();
+                        documentDAO1.update(document);
+                    }
+                    refreshListDocuments(model, documentDAO);
+                }
+            });
+
+            // Supprimer document
+            btnDocDel.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Document document = getTextFieldsValues();
+                    if (document == null) {
+                        lblInfo.setText("Informations incomplètes");
+                    } else if (document.getId_document() == 0) {
+                        lblInfo.setText("L'id n'est pas renseigné");
+                    } else {
+                        DocumentDAO documentDAO1 = new DocumentDAO();
+                        documentDAO1.delete(document);
+                    }
+                    refreshListDocuments(model, documentDAO);
+                }
+            });
+            // Vider les champs texte
+            btnDocClear.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    tfTitle.setText("");
+                    tfDocNbPages.setText("");
+                    tfYear.setText("");
+                }
+            });
+            // Fonction de création d'auteur
+            btnAuthor.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Author authorView = new Author();
+                    String[] authorNames = tfAuthor.getText().split(" ");
+                    authorView.setFirst_name(authorNames[0]);
+                    authorView.setLast_name(authorNames[1]);
+                    AuthorDAO authorDAO1 = new AuthorDAO();
+                    authorDAO1.create(authorView);
+
+                }
+            });
+            // Fonction de création d'edition
+            btnEdition.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    Edition editionView = new Edition();
+                    editionView.setName(tfEdition.getText());
+                    EditionDAO editionDAO1 = new EditionDAO();
+                    editionDAO1.create(editionView);
+
+                }
+            });
 
 
-        btnDocSearch.addActionListener(new ActionListener() {
+        /*********************************************************************************************** USERS *********************************************************************************/
+
+        // Récupération du critère de recherche
+        String SearchUParam = tfUserSearch.getText();
+        // Entêtes de la table d'affichage des données
+        DefaultTableModel modelU = new DefaultTableModel();
+        modelU.addColumn("Nom");
+        modelU.addColumn("Prénom");
+        modelU.addColumn("Email");
+        modelU.addColumn("Admin");
+        tbUsers.setModel(modelU);
+        // Recherche dans la BDD
+        UserDAO userDAO = new UserDAO();
+        // Récupération de l'ensemble des utilisateurs pour affichage dans la jtable
+        ArrayList<User> users = userDAO.findAll();
+        for(User user :users){
+            modelU.addRow(new Object[]{user.getLast_name(), user.getFirst_name(), user.getEmail(),user.getIs_admin()});
+        }
+
+        cbAdmin.addItem(0);
+        cbAdmin.addItem(1);
+        // Chercher par nom d'un utilisateur
+        btnUserSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int rowCount = model.getRowCount();
+                int rowCount = modelU.getRowCount();
                 for (int i = rowCount - 1; i >= 0; i--) {
-                    model.removeRow(i);
+                    modelU.removeRow(i);
                 }
-                String searchParam = tfDocSearch.getText();
-                ArrayList<Document> documentsResult = documentDAO.findTitleWithParam(searchParam);
-                for(Document doc :documentsResult){
-                    model.addRow(new Object[]{doc.getTitle(), doc.getPages_nbr(), doc.getYear()});
+                String SearchUParam = tfUserSearch.getText();
+                ArrayList<User> usersResult = userDAO.findNameWithParam(SearchUParam);
+                for(User user :usersResult){
+                    modelU.addRow(new Object[]{user.getLast_name(), user.getFirst_name(), user.getEmail(),user.getIs_admin()});
                 }
             }
         });
 
-
-        btnDocCreate.addActionListener(new ActionListener() {
+        // Créer utilisateur
+        btnUserCreate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Document document = getTextFieldsValues();
-                if(document != null){
-                    DocumentDAO documentDAO1 = new DocumentDAO();
-                    documentDAO1.create(document);
+                User user = getUserTextFieldsValues();
+                if(user != null){
+                    UserDAO userDAO1 = new UserDAO();
+                    userDAO1.create(user);
                 }
                 else{
                     lblInfo.setText("Informations incomplètes");
                 }
+                refreshListUsers( modelU,  userDAO);
             }
         });
-
-        btnDocUpdate.addActionListener(new ActionListener() {
+        // Mettre à jour utilisateurs
+        btnUserUpdate.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Document document = getTextFieldsValues();
-                if(document == null){
+                User user = getUserTextFieldsValues();
+                if(user == null){
                     lblInfo.setText("Informations incomplètes");
                 }
-                else if(document.getId_document()== 0){
+                else if(user.getId_user()== 0){
                     lblInfo.setText("L'id n'est pas renseigné");
                 }
                 else{
-                    DocumentDAO documentDAO1 = new DocumentDAO();
-                    documentDAO1.update(document);
+                    UserDAO userDAO1 = new UserDAO();
+                    userDAO1.update(user);
                 }
+                refreshListUsers( modelU,  userDAO);
             }
         });
 
-
-        btnDocDel.addActionListener(new ActionListener() {
+        // Supprimer utilisateur
+        btnUserDel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Document document = getTextFieldsValues();
-                if(document == null){
+                User user = getUserTextFieldsValues();
+                if(user == null){
                     lblInfo.setText("Informations incomplètes");
                 }
-                else if(document.getId_document()== 0){
+                else if(user.getId_user()== 0){
                     lblInfo.setText("L'id n'est pas renseigné");
                 }
                 else{
-                    DocumentDAO documentDAO1 = new DocumentDAO();
-                    documentDAO1.delete(document);
+                    UserDAO userDAO1 = new UserDAO();
+                    userDAO1.delete(user);
                 }
+                refreshListUsers( modelU,  userDAO);
             }
         });
-        btnDocClear.addActionListener(new ActionListener() {
+        // Vider les champs texte
+        btnUserClear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tfTitle.setText("");
-                tfDocNbPages.setText("");
-                tfYear.setText("");
+                tfEmail.setText("");
+                tfUserPass.setText("");
+                tfUserFirstName.setText("");
+                tfUserLastName.setText("");
             }
         });
 
-        btnAuthor.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Author authorView = new Author();
-                String[] authorNames = tfAuthor.getText().split(" ");
-                authorView.setSurname(authorNames[0]);
-                authorView.setName(authorNames[1]);
-                AuthorDAO authorDAO1 = new AuthorDAO();
-                authorDAO1.create(authorView);
-                
-            }
+        // Chargement des champs lorsqu'une ligne est sélectionnée
+        tbUsers.addComponentListener(new ComponentAdapter() {
         });
-        btnEdition.addActionListener(new ActionListener() {
+        tbUsers.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                Edition editionView = new Edition();
-                editionView.setName(tfEdition.getText());
-                EditionDAO editionDAO1 = new EditionDAO();
-                editionDAO1.create(editionView);
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int index = tbUsers.getSelectedRow();
+                User user = users.get(index);
+                tfEmail.setText(user.getEmail());
+                tfUserFirstName.setText(user.getFirst_name());
+                tfUserLastName.setText(user.getLast_name());
+                lblUserIdValue.setText(String.valueOf(user.getId_user()));
+                cbAdmin.setSelectedItem(user.getId_user());
+                tfUserPass.setText(user.getPassword());
 
             }
         });
     }
+    /*********************************************************************************************** FONCTIONS DOCUMENTS *********************************************************************************/
+
     // Fonction qui permet de les récupérer les valeurs de champs afin de les envoyer vers la BDD
     public Document getTextFieldsValues(){
         // Création d'un objet document qui recevra les valeurs des champs documents
@@ -187,12 +339,65 @@ public class DocumentsSearchPage extends JFrame {
         // chargement de ses paramètres
         if(tfTitle.getText().equals("") ||tfDocNbPages.getText().equals("")||tfYear.getText().equals("") || cbEdtion.getSelectedItem().equals(""))
             return null;
-        viewDoc.setId_document(Integer.parseInt(lblDocId.getText()));
+        if(lblDocIdValue.getText().equals(""))
+            viewDoc.setId_document(0);
+        else{
+            viewDoc.setId_document(Integer.parseInt(lblDocIdValue.getText()));
+        }
         viewDoc.setTitle(tfTitle.getText());
         viewDoc.setPages_nbr(Integer.parseInt(tfDocNbPages.getText()));
         viewDoc.setYear(Integer.parseInt(tfYear.getText()));
         viewDoc.setId_edition(((Edition) cbEdtion.getSelectedItem()).getId_edition());
         return viewDoc;
+    }
+
+    // Actualiser l'affichage de la table de documents
+    public void refreshListDocuments(DefaultTableModel model, DocumentDAO documentDAO) {
+        int rowCount = model.getRowCount();
+        for (int i = rowCount - 1; i >= 0; i--) {
+            model.removeRow(i);
+        }
+        String searchParam = tfDocSearch.getText();
+        ArrayList<Document> documentsResult = documentDAO.findAll();
+        for(Document doc :documentsResult){
+            model.addRow(new Object[]{doc.getTitle(), doc.getPages_nbr(), doc.getYear()});
+        }
+    }
+
+
+/*********************************************************************************************** FONCTIONS USERS *********************************************************************************/
+    // Fonction qui permet de les récupérer les valeurs de champs afin de les envoyer vers la BDD
+    public User getUserTextFieldsValues(){
+        // Création d'un objet document qui recevra les valeurs des champs documents
+        User viewUser = new User();
+
+        // chargement de ses paramètres
+        if(tfEmail.getText().equals("") ||tfUserFirstName.getText().equals("")||tfUserLastName.getText().equals("") ||tfEmail.getText().equals("")|| cbAdmin.getSelectedItem().equals(""))
+            return null;
+        if(lblUserIdValue.getText().equals(""))
+            viewUser.setId_user(0);
+        else{
+            viewUser.setId_user(Integer.parseInt(lblUserIdValue.getText()));
+        }
+        viewUser.setPassword(tfUserPass.getText());
+        viewUser.setEmail(tfEmail.getText());
+        viewUser.setFirst_name(tfUserFirstName.getText());
+        viewUser.setLast_name(tfUserLastName.getText());
+        viewUser.setIs_admin((Integer) cbAdmin.getSelectedItem());
+        return viewUser;
+    }
+
+    // Actualiser l'affichage de la table utilisateurs
+    public void refreshListUsers(DefaultTableModel modelU, UserDAO userDAO) {
+        int rowCount = modelU.getRowCount();
+        for (int i = rowCount - 1; i >= 0; i--) {
+            modelU.removeRow(i);
+        }
+        String searchParam = tfUserSearch.getText();
+        ArrayList<User> usersResult = userDAO.findAll();
+        for(User user :usersResult){
+            modelU.addRow(new Object[]{user.getLast_name(), user.getFirst_name(), user.getEmail(),user.getIs_admin()});
+        }
     }
 
 

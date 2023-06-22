@@ -7,6 +7,7 @@ public class ConnectionToBDD {
 
     private static String passwd = "RvTC6F8D";
 
+
     private static Connection connect;
 
     public static Connection getInstance(){
