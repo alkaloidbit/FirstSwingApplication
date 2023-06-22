@@ -1,17 +1,11 @@
-DROP DATABASE IF EXISTS `gestion_bu`;
-CREATE DATABASE IF NOT EXISTS `gestion_bu` DEFAULT CHARACTER SET UTF8MB4 COLLATE utf8mb4_unicode_ci;
-USE `gestion_bu`;
-
-CREATE TABLE `belongs` (
-  `id_document` int(11) NOT NULL,
-  `id_genre` int(11) NOT NULL,
-  PRIMARY KEY (`id_document`, `id_genre`)
-) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
+DROP DATABASE IF EXISTS `firstswingapp`;
+CREATE DATABASE IF NOT EXISTS `firstswingapp` DEFAULT CHARACTER SET UTF8MB4 COLLATE utf8mb4_unicode_ci;
+USE `firstswingapp`;
 
 CREATE TABLE `author` (
   `id_author` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50),
-  `surname` varchar(50),
+  `first_name` varchar(50),
+  `last_name` varchar(50),
   PRIMARY KEY (`id_author`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
@@ -20,6 +14,7 @@ CREATE TABLE `document` (
   `title` varchar(255) NOT NULL,
   `pages_nbr` smallint NOT NULL,
   `id_edition` int(11) NOT NULL,
+  `id_genre` int(11) DEFAULT NULL,
   `year` varchar(4) NOT NULL,
   PRIMARY KEY (`id_document`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
@@ -66,11 +61,10 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 ALTER TABLE `user` ADD CONSTRAINT UNIQ_8567 UNIQUE(`email`);
-ALTER TABLE `belongs` ADD FOREIGN KEY (`id_genre`) REFERENCES `genre` (`id_genre`);
-ALTER TABLE `belongs` ADD FOREIGN KEY (`id_document`) REFERENCES `document` (`id_document`);
 ALTER TABLE `document` ADD FOREIGN KEY (`id_edition`) REFERENCES `edition` (`id_edition`);
-ALTER TABLE `compose` adD FOREIGN KEY (`id_document`) REFERENCES `document` (`id_document`);
-ALTER TABLE `compose` adD FOREIGN KEY (`id_author`) REFERENCES `author` (`id_author`);
+ALTER TABLE `document` ADD FOREIGN KEY (`id_genre`) REFERENCES `genre` (`id_genre`);
+ALTER TABLE `compose` adD FOREIGN KEY (`id_document`) REFERENCES `document` (`id_document`) ON DELETE CASCADE;
+ALTER TABLE `compose` adD FOREIGN KEY (`id_author`) REFERENCES `author` (`id_author`) ON DELETE CASCADE;
 ALTER TABLE `borrow` ADD FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`);
 ALTER TABLE `borrow` ADD FOREIGN KEY (`id_copy`) REFERENCES `copy` (`id_copy`);
 ALTER TABLE `copy` ADD FOREIGN KEY (`id_document`) REFERENCES `document` (`id_document`);
