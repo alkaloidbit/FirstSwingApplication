@@ -1,5 +1,6 @@
 package Views;
 
+import Controllers.DatasController;
 import DAO.AuthorDAO;
 import DAO.DocumentDAO;
 import DAO.EditionDAO;
@@ -93,122 +94,174 @@ public class DocumentsSearchPage extends JFrame {
         DocumentDAO documentDAO = new DocumentDAO();
         // Récupération de l'ensemble des documents pour affichage dans la jtable
         ArrayList<Document> documents = documentDAO.findAll();
+        DatasController dc = new DatasController();
+        dc.setListDocuments(documents);
         for(Document doc :documents){
             model.addRow(new Object[]{doc.getTitle(), doc.getPages_nbr(), doc.getYear()});
         }
 
-            // Récupération des éditions pour le comboBox
-            EditionDAO editionDAO = new EditionDAO();
-            ArrayList<Edition> editionsList = editionDAO.findAll();
-            // Injection dans le combobox
-            for (Edition ed : editionsList) {
-                cbEdtion.addItem(ed);
+        // Récupération des éditions pour le comboBox
+        EditionDAO editionDAO = new EditionDAO();
+        ArrayList<Edition> editionsList = editionDAO.findAll();
+        // Injection dans le combobox
+        for (Edition ed : editionsList) {
+            cbEdtion.addItem(ed);
+        }
+        // Envoi vers DataController
+        DatasController dce = new DatasController();
+        dce.setListEditionCombo(editionsList);
+
+        // Récupération des auteurs pour le comboBox
+        AuthorDAO authorDAO = new AuthorDAO();
+        ArrayList<Author> authorList = authorDAO.findAll();
+        // Injection dans le combobox
+        for (Author aut : authorList) {
+            cbAuteur.addItem(aut);
+        }
+        // Envoi vers DataController
+        dce.setListAuthorCombo(authorList);
+
+        // Chercher par titre d'un document
+        btnDocSearch.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int rowCount = model.getRowCount();
+                for (int i = rowCount - 1; i >= 0; i--) {
+                    model.removeRow(i);
+                }
+                String searchParam = tfDocSearch.getText();
+                ArrayList<Document> documentsResult = documentDAO.findTitleWithParam(searchParam);
+                for (Document doc : documentsResult) {
+                    model.addRow(new Object[]{doc.getTitle(), doc.getPages_nbr(), doc.getYear()});
+                }
             }
-            // Récupération des auteurs pour le comboBox
-            AuthorDAO authorDAO = new AuthorDAO();
-            ArrayList<Author> authorList = authorDAO.findAll();
-            // Injection dans le combobox
-            for (Author aut : authorList) {
-                cbAuteur.addItem(aut);
+        });
+
+        // Créer document
+        btnDocCreate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Document document = getTextFieldsValues();
+                if (document != null) {
+                    DocumentDAO documentDAO1 = new DocumentDAO();
+                    documentDAO1.create(document);
+                } else {
+                    lblInfo.setText("Informations incomplètes");
+                }
+                refreshListDocuments(model, documentDAO);
             }
+        });
 
-            // Chercher par titre d'un document
-            btnDocSearch.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    int rowCount = model.getRowCount();
-                    for (int i = rowCount - 1; i >= 0; i--) {
-                        model.removeRow(i);
-                    }
-                    String searchParam = tfDocSearch.getText();
-                    ArrayList<Document> documentsResult = documentDAO.findTitleWithParam(searchParam);
-                    for (Document doc : documentsResult) {
-                        model.addRow(new Object[]{doc.getTitle(), doc.getPages_nbr(), doc.getYear()});
-                    }
+        // Mettre à jour documents
+        btnDocUpdate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Document document = getTextFieldsValues();
+                if (document == null) {
+                    lblInfo.setText("Informations incomplètes");
+                } else if (document.getId_document() == 0) {
+                    lblInfo.setText("L'id n'est pas renseigné");
+                } else {
+                    DocumentDAO documentDAO1 = new DocumentDAO();
+                    documentDAO1.update(document);
                 }
-            });
+                refreshListDocuments(model, documentDAO);
+            }
+        });
 
-            // Créer document
-            btnDocCreate.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Document document = getTextFieldsValues();
-                    if (document != null) {
-                        DocumentDAO documentDAO1 = new DocumentDAO();
-                        documentDAO1.create(document);
-                    } else {
-                        lblInfo.setText("Informations incomplètes");
-                    }
-                    refreshListDocuments(model, documentDAO);
+        // Supprimer document
+        btnDocDel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Document document = getTextFieldsValues();
+                if (document == null) {
+                    lblInfo.setText("Informations incomplètes");
+                } else if (document.getId_document() == 0) {
+                    lblInfo.setText("L'id n'est pas renseigné");
+                } else {
+                    DocumentDAO documentDAO1 = new DocumentDAO();
+                    documentDAO1.delete(document);
                 }
-            });
-            // Mettre à jour documents
-            btnDocUpdate.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Document document = getTextFieldsValues();
-                    if (document == null) {
-                        lblInfo.setText("Informations incomplètes");
-                    } else if (document.getId_document() == 0) {
-                        lblInfo.setText("L'id n'est pas renseigné");
-                    } else {
-                        DocumentDAO documentDAO1 = new DocumentDAO();
-                        documentDAO1.update(document);
-                    }
-                    refreshListDocuments(model, documentDAO);
+                refreshListDocuments(model, documentDAO);
+            }
+        });
+        // Vider les champs texte
+        btnDocClear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                tfTitle.setText("");
+                tfDocNbPages.setText("");
+                tfYear.setText("");
+                lblDocIdValue.setText("");
+            }
+        });
+        // Fonction de création d'auteur
+        btnAuthor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Author authorView = new Author();
+                String[] authorNames = tfAuthor.getText().split(" ");
+                authorView.setFirst_name(authorNames[0]);
+                authorView.setLast_name(authorNames[1]);
+                AuthorDAO authorDAO1 = new AuthorDAO();
+                authorDAO1.create(authorView);
+                // Mise à jour DataController
+                DatasController dce = new DatasController();
+                dce.addAuthorToCombo(authorView);
+                // Actualisation du combo
+                ArrayList<Author> statComAut = dce.getListAuthorCombo();
+                for (int i=0; i<statComAut.size()-1; i++) {
+                    cbAuteur.removeItemAt(0);
                 }
-            });
 
-            // Supprimer document
-            btnDocDel.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Document document = getTextFieldsValues();
-                    if (document == null) {
-                        lblInfo.setText("Informations incomplètes");
-                    } else if (document.getId_document() == 0) {
-                        lblInfo.setText("L'id n'est pas renseigné");
-                    } else {
-                        DocumentDAO documentDAO1 = new DocumentDAO();
-                        documentDAO1.delete(document);
-                    }
-                    refreshListDocuments(model, documentDAO);
+                for (Author aut : dce.getListAuthorCombo()) {
+                    cbAuteur.addItem(aut);
                 }
-            });
-            // Vider les champs texte
-            btnDocClear.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    tfTitle.setText("");
-                    tfDocNbPages.setText("");
-                    tfYear.setText("");
-                }
-            });
-            // Fonction de création d'auteur
-            btnAuthor.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Author authorView = new Author();
-                    String[] authorNames = tfAuthor.getText().split(" ");
-                    authorView.setFirst_name(authorNames[0]);
-                    authorView.setLast_name(authorNames[1]);
-                    AuthorDAO authorDAO1 = new AuthorDAO();
-                    authorDAO1.create(authorView);
 
+            }
+        });
+        // Fonction de création d'edition
+        btnEdition.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Edition editionView = new Edition();
+                editionView.setName(tfEdition.getText());
+                EditionDAO editionDAO1 = new EditionDAO();
+                editionDAO1.create(editionView);
+                // Mise à jour DataController
+                DatasController dce = new DatasController();
+                dce.addEditionToCombo(editionView);
+                // Actualisation du combo
+                ArrayList<Edition> statComEd = dce.getListEditionCombo();
+                for (int i=0; i<statComEd.size()-1; i++) {
+                    cbEdtion.removeItemAt(0);
                 }
-            });
-            // Fonction de création d'edition
-            btnEdition.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    Edition editionView = new Edition();
-                    editionView.setName(tfEdition.getText());
-                    EditionDAO editionDAO1 = new EditionDAO();
-                    editionDAO1.create(editionView);
 
+                for (Edition ed : dce.getListEditionCombo()) {
+                    cbEdtion.addItem(ed);
                 }
-            });
-
+            }
+        });
+        // Chargement des champs lorsqu'une ligne est sélectionnée
+        tbDocuments.addComponentListener(new ComponentAdapter() {
+        });
+        tbDocuments.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                int index = tbDocuments.getSelectedRow();
+                DatasController dt = new DatasController();
+                ArrayList<Document> statDocs = dt.getListDocuments();
+                Document doc = statDocs.get(index);
+                tfTitle.setText(doc.getTitle());
+                tfDocNbPages.setText(String.valueOf(doc.getPages_nbr()));
+                tfYear.setText(String.valueOf(doc.getYear()));
+                lblDocIdValue.setText(String.valueOf(doc.getId_document()));
+                DatasController dc = new DatasController();
+                Edition ed = dc.getEditionById(doc.getId_edition());
+                cbEdtion.setSelectedItem(ed);
+            }
+        });
 
         /*********************************************************************************************** USERS *********************************************************************************/
 
@@ -225,6 +278,7 @@ public class DocumentsSearchPage extends JFrame {
         UserDAO userDAO = new UserDAO();
         // Récupération de l'ensemble des utilisateurs pour affichage dans la jtable
         ArrayList<User> users = userDAO.findAll();
+        dc.setListUsers(users);
         for(User user :users){
             modelU.addRow(new Object[]{user.getLast_name(), user.getFirst_name(), user.getEmail(),user.getIs_admin()});
         }
@@ -307,6 +361,7 @@ public class DocumentsSearchPage extends JFrame {
                 tfUserPass.setText("");
                 tfUserFirstName.setText("");
                 tfUserLastName.setText("");
+                lblUserIdValue.setText("");
             }
         });
 
@@ -318,7 +373,9 @@ public class DocumentsSearchPage extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 int index = tbUsers.getSelectedRow();
-                User user = users.get(index);
+                DatasController dt = new DatasController();
+                ArrayList<User> statUsers = dt.getListUsers();
+                User user = statUsers.get(index);
                 tfEmail.setText(user.getEmail());
                 tfUserFirstName.setText(user.getFirst_name());
                 tfUserLastName.setText(user.getLast_name());
@@ -328,6 +385,8 @@ public class DocumentsSearchPage extends JFrame {
 
             }
         });
+
+
     }
     /*********************************************************************************************** FONCTIONS DOCUMENTS *********************************************************************************/
 
@@ -359,10 +418,15 @@ public class DocumentsSearchPage extends JFrame {
         }
         String searchParam = tfDocSearch.getText();
         ArrayList<Document> documentsResult = documentDAO.findAll();
+        DatasController dc = new DatasController();
+        dc.setListDocuments(documentsResult);
         for(Document doc :documentsResult){
             model.addRow(new Object[]{doc.getTitle(), doc.getPages_nbr(), doc.getYear()});
         }
+
     }
+
+
 
 
 /*********************************************************************************************** FONCTIONS USERS *********************************************************************************/
@@ -395,6 +459,8 @@ public class DocumentsSearchPage extends JFrame {
         }
         String searchParam = tfUserSearch.getText();
         ArrayList<User> usersResult = userDAO.findAll();
+        DatasController dc = new DatasController();
+        dc.setListUsers(usersResult);
         for(User user :usersResult){
             modelU.addRow(new Object[]{user.getLast_name(), user.getFirst_name(), user.getEmail(),user.getIs_admin()});
         }

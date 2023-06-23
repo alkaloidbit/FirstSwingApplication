@@ -114,7 +114,7 @@ public class DocumentDAO extends DAO<Document> {
             prepare.setInt(2, document.getPages_nbr());
             prepare.setInt(3, document.getId_edition());
             prepare.setInt(4, document.getYear());
-            prepare.setInt(6, document.getId_document());
+            prepare.setInt(5, document.getId_document());
             return prepare.executeUpdate();
 
         } catch (SQLException e) {

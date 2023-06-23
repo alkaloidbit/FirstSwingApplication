@@ -2,10 +2,10 @@ package Utilities;
 
 import java.sql.*;
 public class ConnectionToBDD {
-    private static String url = "jdbc:mysql://localhost:3306/gestion_bu";
+    private static String url = "jdbc:mysql://localhost:3307/firstswingapp";
     private static String user = "root";
 
-    private static String passwd = "RvTC6F8D";
+    private static String passwd = "root";
 
 
     private static Connection connect;
