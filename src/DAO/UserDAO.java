@@ -2,6 +2,7 @@ package DAO;
 
 import Models.Document;
 import Models.User;
+import Models.PasswordHasher;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -9,6 +10,13 @@ import java.util.List;
 
 
 public class UserDAO extends DAO<User> {
+    PasswordHasher passwordHasher;
+    byte[] salt;
+    public UserDAO () {
+       this.passwordHasher = new PasswordHasher();
+       this.salt = "monsel".getBytes();
+    }
+
     @Override
     public User find(long id) {
         try {
@@ -63,7 +71,9 @@ public class UserDAO extends DAO<User> {
     }
     public boolean checkValidUser(String userEmail, String userPassword) {
         User userInDB = findByEmail(userEmail);
-        if(userInDB != null && userInDB.getPassword().equals(userPassword)){
+        String hashedPassword = this.passwordHasher.hashPassword(userPassword, this.salt);
+
+        if(userInDB != null && userInDB.getPassword().equals(hashedPassword)){
             return true;
         }
         return false;
@@ -120,15 +130,16 @@ public class UserDAO extends DAO<User> {
 
     @Override
     public int create(User user) {
+        String hashedPassword = this.passwordHasher.hashPassword(user.getPassword(), this.salt);
         try {
             PreparedStatement prepare = connect
-                    .prepareStatement("INSERT INTO user (is_admin, first_name,last_name,email,password) VALUES(?, ?, ?, ?, ?)");
+                .prepareStatement("INSERT INTO user (is_admin, first_name,last_name,email,password) VALUES(?, ?, ?, ?, ?)");
 
             prepare.setInt(1, user.getIs_admin());
             prepare.setString(2, user.getFirst_name());
             prepare.setString(3, user.getLast_name());
             prepare.setString(4, user.getEmail());
-            prepare.setString(5, user.getPassword());
+            prepare.setString(5, hashedPassword);
             return prepare.executeUpdate();
 
         } catch (SQLException e) {

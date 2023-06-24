@@ -6,6 +6,9 @@ import javax.swing.*;
 
 public class Main {
     public static void main(String[] args) throws UnsupportedLookAndFeelException {
-        LoginPage loginPage = new LoginPage();
+//        testCreateUserWithHashedPassword test = new testCreateUserWithHashedPassword();
+//        test.testCreateUser();
+
+         LoginPage loginPage = new LoginPage();
     }
 }
