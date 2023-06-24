@@ -8,6 +8,8 @@ import Models.User;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class LoginPage extends JFrame {
     private JLabel userEmailLabel;
@@ -21,7 +23,7 @@ public class LoginPage extends JFrame {
 
     public LoginPage() {
         super("Bibliothèque Login");
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(800, 500);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -39,23 +41,27 @@ public class LoginPage extends JFrame {
                 else{
                     User userLogged = userDAO.findByEmail(userEmail);
                     infoLoginLabel.setText("Bienvenue "+userLogged.getFirst_name()+ " " + userLogged.getLast_name());
-                    /* LoggedUser loggedUser = new LoggedUser();
-                    loggedUser.logUser(userLogged);
-                    LoggedUser lu = new LoggedUser();
-                    System.out.println(lu.getLogUser().getFirst_name()); */
+
                     if(userLogged.getIs_admin() == 1){
                         DocumentsSearchPage documentsSearchPage = new DocumentsSearchPage();
+                        modifyVisiblility(false);
                     }
                     else{
                         DocumentsSearchPageBasic documentsSearchPage = new DocumentsSearchPageBasic();
+                        modifyVisiblility(false);
                     }
 
                 }
             }
         });
+        // Pour soumettre avec "entrée"
+        getRootPane().setDefaultButton(loginButton);
+
     }
 
     public User user;
 
-
+    public void modifyVisiblility(boolean bo){
+        this.setVisible(bo);
+    }
 }
