@@ -135,9 +135,9 @@ public class AdminUsersJPanel extends JPanel {
 
 
     }
-    // Fonction qui permet de les récupérer les valeurs de champs afin de les envoyer vers la BDD
+    // Fonction qui permet de récupérer les valeurs de champs afin de les envoyer vers la BDD
     public User getUserTextFieldsValues(){
-        // Création d'un objet document qui recevra les valeurs des champs documents
+        // Création d'un objet user qui recevra les valeurs des champs user
         User viewUser = new User();
 
         // chargement de ses paramètres

@@ -9,12 +9,6 @@ public class User {
     private String password;
 
     public User() {
-        this.id_user = 0;
-        this.is_admin = 0;
-        this.first_name = "";
-        this.last_name = "";
-        this.email = "";
-        this.password = "";
     }
 
     public User(int id_user, int is_admin, String first_name, String last_name, String email, String password) {
@@ -73,4 +67,17 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String toString() {
+        String str = "Id_user: " + this.getId_user() + "\n";
+        str += "NOM: " + this.getLast_name() + "\n";
+        str += "PRENOM: " + this.getFirst_name() + "\n";
+        str += "Mail: " + this.getEmail() + "\n";
+        str += "Password: " + this.getPassword() + "\n";
+        str += "is_admin" + this.getIs_admin() + "\n";
+        str += "....................................";
+
+        return str;
+    }
+
 }
