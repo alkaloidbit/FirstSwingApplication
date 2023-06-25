@@ -93,7 +93,7 @@ public class AdminUsersJPanel extends JPanel {
                 if(user == null){
                     lblInfo.setText("Informations incomplètes");
                 }
-                else if(user.getId_user()== 0){
+                else if(user.getId()== 0){
                     lblInfo.setText("L'id n'est pas renseigné");
                 }
                 else{
@@ -112,7 +112,7 @@ public class AdminUsersJPanel extends JPanel {
                 if(user == null){
                     lblInfo.setText("Informations incomplètes");
                 }
-                else if(user.getId_user()== 0){
+                else if(user.getId()== 0){
                     lblInfo.setText("L'id n'est pas renseigné");
                 }
                 else{
@@ -144,9 +144,9 @@ public class AdminUsersJPanel extends JPanel {
         if(tfEmail.getText().equals("") ||tfUserFirstName.getText().equals("")||tfUserLastName.getText().equals("") ||tfEmail.getText().equals("")|| cbAdmin.getSelectedItem().equals(""))
             return null;
         if(lblUserIdValue.getText().equals(""))
-            viewUser.setId_user(0);
+            viewUser.setId(0);
         else{
-            viewUser.setId_user(Integer.parseInt(lblUserIdValue.getText()));
+            viewUser.setId(Integer.parseInt(lblUserIdValue.getText()));
         }
         viewUser.setPassword(tfUserPass.getText());
         viewUser.setEmail(tfEmail.getText());
