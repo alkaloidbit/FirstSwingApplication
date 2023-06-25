@@ -20,7 +20,7 @@ public class testCreateUserWithHashedPassword {
         user.setEmail("fo@mail.com");
         user.setPassword(hashedPassword);
         user.setIs_admin(1);
-        User res = udao.create(user);
+        int res = udao.create(user);
         System.out.println(user);
     }
 }
