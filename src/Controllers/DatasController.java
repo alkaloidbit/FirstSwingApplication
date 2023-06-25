@@ -13,6 +13,7 @@ public class DatasController {
 
     private static ArrayList<Author> ListAuthorCombo;
 
+
     public ArrayList<Document> getListDocuments() {
         return listDocuments;
     }
@@ -51,7 +52,6 @@ public class DatasController {
         }
         return null;
     }
-
     public void addEditionToCombo(Edition editionView) {
         ListEditionCombo.add(editionView);
     }
@@ -59,4 +59,6 @@ public class DatasController {
     public void addAuthorToCombo(Author authorView) {
         ListAuthorCombo.add(authorView);
     }
+
+
 }

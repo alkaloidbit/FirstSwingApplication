@@ -1,20 +1,22 @@
 package Models;
 
+import java.util.ArrayList;
+
 public class Document {
     private int id_document;
     private String title;
     private int pages_nbr;
-    private int id_edition;
+    private Edition edition;
     private int year;
-
+    private ArrayList<Author> authors;
     public Document() {
     }
 
-    public Document(int id_document, String title, int pages_nbr, int id_edition, int year) {
+    public Document(int id_document, String title, int pages_nbr, Edition edition, int year) {
         this.id_document = id_document;
         this.title = title;
         this.pages_nbr = pages_nbr;
-        this.id_edition = id_edition;
+        this.edition = edition;
         this.year = year;
     }
 
@@ -42,12 +44,12 @@ public class Document {
         this.pages_nbr = pages_nbr;
     }
 
-    public int getId_edition() {
-        return id_edition;
+    public Edition getEdition() {
+        return this.edition;
     }
 
-    public void setId_edition(int id_edition) {
-        this.id_edition = id_edition;
+    public void setEdition(Edition edition) {
+        this.edition = edition;
     }
 
     public int getYear() {
@@ -56,5 +58,13 @@ public class Document {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public ArrayList<Author> getAuthors() {
+        return authors;
+    }
+
+    public void setAuthors(ArrayList<Author> authors) {
+        this.authors = authors;
     }
 }

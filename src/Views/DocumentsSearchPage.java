@@ -72,10 +72,24 @@ public class DocumentsSearchPage extends JFrame {
     private JPanel pDoc2;
     private JPanel pDoc3;
     private JPanel pUser;
+    private JScrollPane spAuthors;
+    private JLabel lblAuthors;
+    private JList lstAuthors;
+    private JList lstAuthorsDoc;
+    private JButton btnAddAuthor;
+    private JButton btnRemoveAuthor;
+    private JScrollPane spAuthorsList;
+    private JScrollPane spAuthorsDocList;
+
+    private static ArrayList<Author> authorsList;
+    private static ArrayList<Document> documentsList;
+    private static ArrayList<Edition> editionsList;
+    private static ArrayList<User> usersList;
+
 
     public DocumentsSearchPage(){
 
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 1000);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
@@ -93,33 +107,45 @@ public class DocumentsSearchPage extends JFrame {
         // Recherche dans la BDD
         DocumentDAO documentDAO = new DocumentDAO();
         // Récupération de l'ensemble des documents pour affichage dans la jtable
-        ArrayList<Document> documents = documentDAO.findAll();
+        documentsList = documentDAO.findAll();
         DatasController dc = new DatasController();
-        dc.setListDocuments(documents);
-        for(Document doc :documents){
+        // dc.setListDocuments(documents);
+
+        for(Document doc :documentsList){
             model.addRow(new Object[]{doc.getTitle(), doc.getPages_nbr(), doc.getYear()});
         }
 
         // Récupération des éditions pour le comboBox
         EditionDAO editionDAO = new EditionDAO();
-        ArrayList<Edition> editionsList = editionDAO.findAll();
+        editionsList = editionDAO.findAll();
         // Injection dans le combobox
         for (Edition ed : editionsList) {
             cbEdtion.addItem(ed);
         }
         // Envoi vers DataController
-        DatasController dce = new DatasController();
-        dce.setListEditionCombo(editionsList);
+        //DatasController dce = new DatasController();
+        //dce.setListEditionCombo(editionsList);
+
 
         // Récupération des auteurs pour le comboBox
         AuthorDAO authorDAO = new AuthorDAO();
-        ArrayList<Author> authorList = authorDAO.findAll();
+        authorsList = authorDAO.findAll();
         // Injection dans le combobox
-        for (Author aut : authorList) {
+        for (Author aut : authorsList) {
             cbAuteur.addItem(aut);
         }
+        // Injection des auteur dans la jList auteur
+        DefaultListModel<Author> autModel = new DefaultListModel<Author>();
+        autModel.addAll(authorsList);
+        lstAuthors.setModel(autModel);
+
+        // Création d'un model pour la jList des auteurs du document traité
+        DefaultListModel<Author> autModelDoc = new DefaultListModel<Author>();
+        lstAuthorsDoc.setModel(autModelDoc);
+
         // Envoi vers DataController
-        dce.setListAuthorCombo(authorList);
+        //dce.setListAuthorCombo(authorsList);
+
 
         // Chercher par titre d'un document
         btnDocSearch.addActionListener(new ActionListener() {
@@ -204,20 +230,26 @@ public class DocumentsSearchPage extends JFrame {
                 authorView.setFirst_name(authorNames[0]);
                 authorView.setLast_name(authorNames[1]);
                 AuthorDAO authorDAO1 = new AuthorDAO();
-                authorDAO1.create(authorView);
+                int resultCreateAut = authorDAO1.create(authorView);
                 // Mise à jour DataController
-                DatasController dce = new DatasController();
-                dce.addAuthorToCombo(authorView);
+                // DatasController dce = new DatasController();
+                // dce.addAuthorToCombo(authorView);
                 // Actualisation du combo
-                ArrayList<Author> statComAut = dce.getListAuthorCombo();
+                /*ArrayList<Author> statComAut = dce.getListAuthorCombo();
                 for (int i=0; i<statComAut.size()-1; i++) {
                     cbAuteur.removeItemAt(0);
                 }
-
+                lstAuthors.removeAll();
                 for (Author aut : dce.getListAuthorCombo()) {
                     cbAuteur.addItem(aut);
-                }
+                }*/
 
+                if(resultCreateAut==1){
+                    authorsList.add(authorView);
+                    cbAuteur.addItem(authorView);
+                    autModel.addElement(authorView);
+                    lstAuthors.setModel(autModel);
+                }
             }
         });
         // Fonction de création d'edition
@@ -227,9 +259,9 @@ public class DocumentsSearchPage extends JFrame {
                 Edition editionView = new Edition();
                 editionView.setName(tfEdition.getText());
                 EditionDAO editionDAO1 = new EditionDAO();
-                editionDAO1.create(editionView);
+                int resultCreateEdition = editionDAO1.create(editionView);
                 // Mise à jour DataController
-                DatasController dce = new DatasController();
+                /*DatasController dce = new DatasController();
                 dce.addEditionToCombo(editionView);
                 // Actualisation du combo
                 ArrayList<Edition> statComEd = dce.getListEditionCombo();
@@ -239,27 +271,32 @@ public class DocumentsSearchPage extends JFrame {
 
                 for (Edition ed : dce.getListEditionCombo()) {
                     cbEdtion.addItem(ed);
-                }
+                }*/
+                if(resultCreateEdition==1)
+                    cbEdtion.addItem(editionView);
             }
         });
-        // Chargement des champs lorsqu'une ligne est sélectionnée
+        // Chargement des champs doc lorsqu'une ligne est sélectionnée
         tbDocuments.addComponentListener(new ComponentAdapter() {
         });
         tbDocuments.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
+                autModelDoc.removeAllElements();
                 int index = tbDocuments.getSelectedRow();
-                DatasController dt = new DatasController();
-                ArrayList<Document> statDocs = dt.getListDocuments();
-                Document doc = statDocs.get(index);
+                //DatasController dt = new DatasController();
+                //ArrayList<Document> statDocs = dt.getListDocuments();
+                Document doc = documentsList.get(index);
                 tfTitle.setText(doc.getTitle());
                 tfDocNbPages.setText(String.valueOf(doc.getPages_nbr()));
                 tfYear.setText(String.valueOf(doc.getYear()));
                 lblDocIdValue.setText(String.valueOf(doc.getId_document()));
-                DatasController dc = new DatasController();
-                Edition ed = dc.getEditionById(doc.getId_edition());
-                cbEdtion.setSelectedItem(ed);
+                //DatasController dc = new DatasController();
+                //Edition ed = dc.getEditionById(doc.getId_edition());
+                cbEdtion.getModel().setSelectedItem(doc.getEdition());
+                // Injection dans la jList Auteurs du doc
+                autModelDoc.addAll(doc.getAuthors());
             }
         });
 
@@ -353,7 +390,7 @@ public class DocumentsSearchPage extends JFrame {
                 refreshListUsers( modelU,  userDAO);
             }
         });
-        // Vider les champs texte
+        // Vider les champs user texte
         btnUserClear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -365,7 +402,7 @@ public class DocumentsSearchPage extends JFrame {
             }
         });
 
-        // Chargement des champs lorsqu'une ligne est sélectionnée
+        // Chargement des champs user lorsqu'une ligne est sélectionnée
         tbUsers.addComponentListener(new ComponentAdapter() {
         });
         tbUsers.addMouseListener(new MouseAdapter() {
@@ -386,7 +423,30 @@ public class DocumentsSearchPage extends JFrame {
             }
         });
 
+        // Ajout des auteurs sélectionnés à la liste d'auteurs du document selectionné
+        btnAddAuthor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int[] newAuthorsIndices = lstAuthors.getSelectedIndices();
+                for (int index : newAuthorsIndices){
+                    if(!autModelDoc.contains(authorsList.get(index))){
+                        autModelDoc.addElement(authorsList.get(index));
+                    }
 
+                }
+            }
+        });
+
+        // Retirer les auteurs sélectionnés de la liste d'auteurs du document selectionné
+        btnRemoveAuthor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int[] newAuthorsDocIndices = lstAuthorsDoc.getSelectedIndices();
+                for (int index = newAuthorsDocIndices.length - 1; index >=0; index--){
+                    autModelDoc.remove(index);
+                }
+            }
+        });
     }
     /*********************************************************************************************** FONCTIONS DOCUMENTS *********************************************************************************/
 
@@ -406,7 +466,12 @@ public class DocumentsSearchPage extends JFrame {
         viewDoc.setTitle(tfTitle.getText());
         viewDoc.setPages_nbr(Integer.parseInt(tfDocNbPages.getText()));
         viewDoc.setYear(Integer.parseInt(tfYear.getText()));
-        viewDoc.setId_edition(((Edition) cbEdtion.getSelectedItem()).getId_edition());
+        viewDoc.setEdition((Edition) cbEdtion.getSelectedItem());
+        ArrayList<Author> docAuthors = new ArrayList<Author>();
+        for(int i = 0; i < lstAuthorsDoc.getModel().getSize(); i++){
+            docAuthors.add((Author) lstAuthorsDoc.getModel().getElementAt(i));
+        }
+        viewDoc.setAuthors(docAuthors);
         return viewDoc;
     }
 
@@ -417,10 +482,10 @@ public class DocumentsSearchPage extends JFrame {
             model.removeRow(i);
         }
         String searchParam = tfDocSearch.getText();
-        ArrayList<Document> documentsResult = documentDAO.findAll();
-        DatasController dc = new DatasController();
-        dc.setListDocuments(documentsResult);
-        for(Document doc :documentsResult){
+        documentsList = documentDAO.findAll();
+        //DatasController dc = new DatasController();
+        // dc.setListDocuments(documentsResult);
+        for(Document doc :documentsList){
             model.addRow(new Object[]{doc.getTitle(), doc.getPages_nbr(), doc.getYear()});
         }
 
