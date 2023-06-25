@@ -1,101 +1,98 @@
 package DAO;
 
 import Models.Author;
+import Models.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
-public class AuthorDAO extends DAO<Author>{
+public class AuthorDAO extends DAO<Author> {
+
     @Override
-    public Author find(long id) {
+    public Author find(int id) {
+        Author author = new Author();
         try {
-            ResultSet results = connect
-                    .createStatement()
-                    .executeQuery(
-                            "SELECT * FROM author WHERE id_author = '"+ String.valueOf(id) +"'"
-                    );
-            while ( results.next() ) {
-                Author author = new Author();
-                author.setId_author(results.getInt("id_author"));
-                author.setLast_name(results.getString("last_name"));
-                author.setFirst_name(results.getString("first_name"));
-                return author;
-            }
+            ResultSet result = this.connect
+                                    .createStatement(
+                                            ResultSet.TYPE_SCROLL_INSENSITIVE,
+                                            ResultSet.CONCUR_UPDATABLE
+                                    )
+                    .executeQuery("SELECT * FROM author WHERE id_author = " + id);
 
+            while(result.next()){
+                author = new Author(
+                        id,
+                        result.getString("first_name"),
+                        result.getString("last_name")
+                );
+            }
         } catch (SQLException e) {
-            e.printStackTrace();
+           e.printStackTrace();
         }
-        return null;
+        return author;
     }
 
     @Override
     public ArrayList<Author> findAll() {
-        List<Author> authors = new ArrayList<>();
+
+        return null;
+    }
+
+    @Override
+    public Author create(Author obj) {
         try {
-            ResultSet results = connect
-                    .createStatement()
-                    .executeQuery(
-                            "SELECT * FROM author"
+            PreparedStatement prepare = this.connect
+                    .prepareStatement(
+                            "INSERT INTO author (first_name, last_name) VALUES(?, ?)",
+                            Statement.RETURN_GENERATED_KEYS
                     );
-            while ( results.next() ) {
-                Author author = new Author();
-                author.setId_author(results.getInt("id_author"));
-                author.setLast_name(results.getString("last_name"));
-                author.setFirst_name(results.getString("first_name"));
-                authors.add(author);
-            }
+            prepare.setString(1, obj.getLast_name());
+            prepare.setString(2, obj.getFirst_name());
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return (ArrayList<Author>) authors;
-    }
-
-    @Override
-    public int create(Author author) {
-        try {
-            PreparedStatement prepare = connect
-                    .prepareStatement("INSERT INTO author (last_name, first_name) VALUES(?, ?)");
-
-            prepare.setString(1, author.getLast_name());
-            prepare.setString(2, author.getFirst_name());
-            return prepare.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    @Override
-    public int update(Author author) {
-        try {
-            PreparedStatement prepare = connect
-                    .prepareStatement("UPDATE author SET last_name = ?, first_name = ? WHERE id_author = ?");
-
-            prepare.setString(2, author.getLast_name());
-            prepare.setString(2, author.getFirst_name());
-            prepare.setInt(6, author.getId_author());
-            return prepare.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    @Override
-    public void delete(Author author) {
-        try {
-            PreparedStatement prepare = connect
-                    .prepareStatement("DELETE FROM author WHERE id_author = ?");
-
-            prepare.setInt(1, author.getId_author());
             prepare.executeUpdate();
+            ResultSet rs = prepare.getGeneratedKeys();
+            if (rs != null && rs.next()) {
+                int key = rs.getInt(1);
+                obj = this.find(key);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
 
+    @Override
+    public Author update(Author obj) {
+        try {
+            this.connect
+                    .createStatement(
+                            ResultSet.TYPE_SCROLL_INSENSITIVE,
+                            ResultSet.CONCUR_UPDATABLE
+                    ).executeUpdate(
+                            "UPDATE author SET first_name = '"+ obj.getFirst_name() +"', " +
+                                              " last_name = '" + obj.getLast_name() + "' "+
+                                                " Where id_author = " + obj.getId() + ""
+                    );
+            obj = this.find(obj.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+
+    @Override
+    public void delete(Author obj) {
+        try {
+            this.connect
+                .createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE
+                ).executeUpdate(
+                    "DELETE FROM author WHERE id_author = " + obj.getId()
+                );
         } catch (SQLException e) {
             e.printStackTrace();
         }

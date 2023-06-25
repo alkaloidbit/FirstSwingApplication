@@ -11,14 +11,14 @@ public abstract class DAO<T> {
     Connection connect = ConnectionToBDD.getInstance();
 
     // Rechercher par id
-    public abstract T find(long id);
+    public abstract T find(int id);
     // Tout rechercher
     public abstract ArrayList<T> findAll();
     // Créer une occurrence dans la BDD
-    public abstract int create(T obj);
+    public abstract T create(T obj);
 
     // Mettre à jour
-    public abstract int update(T obj);
+    public abstract T update(T obj);
 
     // Supprimer
     public abstract void delete(T obj);

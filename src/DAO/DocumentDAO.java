@@ -1,137 +1,190 @@
 package DAO;
 
+import Models.Author;
 import Models.Document;
-import Models.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DocumentDAO extends DAO<Document> {
-    @Override
-    public Document find(long id) {
 
+    private EditionDAO editionDAO;
+
+    private GenreDAO genreDAO;
+
+    @Override
+    public Document find(int id) {
+        Document document = new Document();
         try {
-            ResultSet results = connect
-                    .createStatement()
-                    .executeQuery(
-                            "SELECT * FROM document WHERE id_document = '"+ String.valueOf(id) + "'"
-                    );
-            while ( results.next() ) {
-                Document document = new Document();
-                document.setId_document(results.getInt("id_document"));
-                document.setTitle(results.getString("title"));
-                document.setPages_nbr(results.getInt("pages_nbr"));
-                document.setId_edition(results.getInt("id_edition"));
-                document.setYear(results.getInt("year"));
-                return document;
+            ResultSet result = this.connect
+                    .createStatement(
+                            ResultSet.TYPE_SCROLL_INSENSITIVE,
+                            ResultSet.CONCUR_UPDATABLE)
+                    .executeQuery("SELECT d.*, e.name as edition, g.name as genre FROM document d" +
+                            " LEFT JOIN edition e " +
+                            " ON e.id_edition = d.id_edition " +
+                            " LEFT JOIN genre g " +
+                            " ON g.id_genre = d.id_genre " +
+                            "  WHERE d.id_document = " + id);
+            ResultSet authorslist = this.connect
+                    .createStatement(
+                            ResultSet.TYPE_SCROLL_INSENSITIVE,
+                            ResultSet.CONCUR_UPDATABLE)
+                    .executeQuery("SELECT  a.* " +
+                            "FROM author a INNER JOIN compose c" +
+                            " on c.id_author  = a.id_author " +
+                            " LEFT JOIN document d on d.id_document = c.id_document " +
+                            "WHERE d.id_document = " + id);
+
+            ArrayList<Author> al = new ArrayList<Author>();
+            while (authorslist.next()) {
+                Author author = new Author(
+                        authorslist.getInt("id_author"),
+                        authorslist.getString("first_name"),
+                        authorslist.getString("last_name"));
+                al.add(author);
             }
 
+            editionDAO = new EditionDAO();
+            genreDAO = new GenreDAO();
+
+            if (result.first())
+                document = new Document(
+                        id,
+                        result.getString("title"),
+                        editionDAO.find(result.getInt("id_edition")),
+                        genreDAO.find(result.getInt("id_genre")),
+                        result.getInt("pages_nbr"),
+                        result.getString("year"),
+                        al);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return document;
     }
 
     @Override
     public ArrayList<Document> findAll() {
-
-        List<Document> documents = new ArrayList<>();
+      ArrayList<Document> documents = new ArrayList<>();
         try {
-            ResultSet results = connect
-                    .createStatement()
-                    .executeQuery(
-                            "SELECT * FROM document"
-                    );
-            while ( results.next() ) {
-                Document document = new Document();
-                document.setId_document(results.getInt("id_document"));
-                document.setTitle(results.getString("title"));
-                document.setPages_nbr(results.getInt("pages_nbr"));
-                document.setId_edition(results.getInt("id_edition"));
-                document.setYear(results.getInt("year"));
+            ResultSet results = this.connect
+                .createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE
+            ).executeQuery("SELECT id_document FROM document");
+
+            while(results.next()) {
+                Document document = this.find(results.getInt("id_document"));
                 documents.add(document);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return (ArrayList<Document>) documents;
+        return documents;
     }
 
     public ArrayList<Document> findTitleWithParam(String searchParam) {
-        List<Document> documents = new ArrayList<>();
+      ArrayList<Document> documents = new ArrayList<>();
         try {
-            ResultSet results = connect
-                    .createStatement()
-                    .executeQuery(
-                            "SELECT * FROM document WHERE title LIKE \"%" + searchParam + "%\""
-                    );
-            while ( results.next() ) {
-                Document document = new Document();
-                document.setId_document(results.getInt("id_document"));
-                document.setTitle(results.getString("title"));
-                document.setPages_nbr(results.getInt("pages_nbr"));
-                document.setId_edition(results.getInt("id_edition"));
-                document.setYear(results.getInt("year"));
+            ResultSet results = this.connect
+                .createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE
+            ).executeQuery(
+                "SELECT id_document FROM document WHERE title LIKE '%" + searchParam + "%' "
+            );
+
+            while(results.next()) {
+                Document document = this.find(results.getInt("id_document"));
                 documents.add(document);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        return (ArrayList<Document>) documents;
-    }
-
-
-    @Override
-    public int create(Document document) {
-        try {
-            PreparedStatement prepare = connect
-                    .prepareStatement("INSERT INTO document (title, pages_nbr,id_edition,year) VALUES(?, ?, ?, ?)");
-
-            prepare.setString(1, document.getTitle());
-            prepare.setInt(2, document.getPages_nbr());
-            prepare.setInt(3, document.getId_edition());
-            prepare.setInt(4, document.getYear());
-            return prepare.executeUpdate();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
+        } 
+        return documents;
     }
 
     @Override
-    public int update(Document document) {
+    public Document create(Document obj) {
         try {
-            PreparedStatement prepare = connect
-                    .prepareStatement("UPDATE document SET title = ?, pages_nbr = ?, id_edition = ?, year = ? WHERE id_document = ?");
+            if (obj.getGenre().getId() == 0) {
+                GenreDAO genreDAO = new GenreDAO();
+                obj.setGenre(genreDAO.create(obj.getGenre()));
+            }
 
-            prepare.setString(1, document.getTitle());
-            prepare.setInt(2, document.getPages_nbr());
-            prepare.setInt(3, document.getId_edition());
-            prepare.setInt(4, document.getYear());
-            prepare.setInt(5, document.getId_document());
-            return prepare.executeUpdate();
+            if (obj.getEdition().getId() == 0) {
+                EditionDAO editionDAO = new EditionDAO();
+                obj.setEdition(editionDAO.create(obj.getEdition()));
+            }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
+            PreparedStatement prepare = this.connect
+                    .prepareStatement(
+                            "INSERT INTO document (title, pages_nbr, id_edition, id_genre, year) VALUES(?, ?, ?, ?, ?)",
+                            Statement.RETURN_GENERATED_KEYS);
+            prepare.setString(1, obj.getTitle());
+            prepare.setInt(2, obj.getPages_nbr());
+            prepare.setInt(3, obj.getEdition().getId());
+            prepare.setInt(4, obj.getGenre().getId());
+            prepare.setString(5, obj.getYear());
 
-    @Override
-    public void delete(Document document) {
-        try {
-            PreparedStatement prepare = connect
-                    .prepareStatement("DELETE FROM document WHERE id_document = ?");
-
-            prepare.setInt(1, document.getId_document());
             prepare.executeUpdate();
+            ResultSet rs = prepare.getGeneratedKeys();
+            if (rs != null && rs.next()) {
+                int key = rs.getInt(1);
+                obj = this.find(key);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
 
+    @Override
+    public Document update(Document obj) {
+        try {
+            GenreDAO genreDAO = new GenreDAO();
+            if (obj.getGenre().getId() == 0) {
+                obj.setGenre(genreDAO.create(obj.getGenre()));
+            }
+            genreDAO.update(obj.getGenre());
+
+            EditionDAO editionDAO = new EditionDAO();
+            if (obj.getEdition().getId() == 0) {
+                obj.setEdition(editionDAO.create(obj.getEdition()));
+            }
+            editionDAO.update(obj.getEdition());
+
+            this.connect
+                    .createStatement(
+                            ResultSet.TYPE_SCROLL_INSENSITIVE,
+                            ResultSet.CONCUR_UPDATABLE)
+                    .executeUpdate(
+                            "UPDATE document SET title = '" + obj.getTitle() + "'," +
+                                    " pages_nbr = '" + obj.getPages_nbr() + "', " +
+                                    " id_edition = '" + obj.getEdition().getId() + "', " +
+                                    " id_genre = '" + obj.getGenre().getId() + "', " +
+                                    " year = '" + obj.getYear() + "'");
+            obj = this.find(obj.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+
+    @Override
+    public void delete(Document obj) {
+        try {
+            this.connect
+                .createStatement(
+                    ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_UPDATABLE
+                ).executeUpdate(
+                    "DELETE FROM document WHERE id_document = " + obj.getId()
+                );
         } catch (SQLException e) {
             e.printStackTrace();
         }
