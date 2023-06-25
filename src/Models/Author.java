@@ -1,7 +1,7 @@
 package Models;
 
 public class Author {
-    private int id_author;
+    private int id;
     private String last_name;
     private String first_name;
 
@@ -9,18 +9,18 @@ public class Author {
     public Author() {
     }
 
-    public Author(int id_author, String last_name, String first_name) {
-        this.id_author = id_author;
+    public Author(int id, String last_name, String first_name) {
+        this.id = id;
         this.last_name = last_name;
         this.first_name = first_name;
     }
 
-    public int getId_author() {
-        return id_author;
+    public int getId() {
+        return id;
     }
 
-    public void setId_author(int id_author) {
-        this.id_author = id_author;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getLast_name() {

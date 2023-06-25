@@ -1,7 +1,7 @@
 package Models;
 
 public class User {
-    private int id_user;
+    private int id;
     private int is_admin;
     private String first_name;
     private String last_name;
@@ -11,8 +11,8 @@ public class User {
     public User() {
     }
 
-    public User(int id_user, int is_admin, String first_name, String last_name, String email, String password) {
-        this.id_user = id_user;
+    public User(int id, int is_admin, String first_name, String last_name, String email, String password) {
+        this.id = id;
         this.is_admin = is_admin;
         this.first_name = first_name;
         this.last_name = last_name;
@@ -20,12 +20,12 @@ public class User {
         this.password = password;
     }
 
-    public int getId_user() {
-        return id_user;
+    public int getId() {
+        return id;
     }
 
-    public void setId_user(int id_user) {
-        this.id_user = id_user;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getIs_admin() {
@@ -69,7 +69,7 @@ public class User {
     }
 
     public String toString() {
-        String str = "Id_user: " + this.getId_user() + "\n";
+        String str = "Id: " + this.getId() + "\n";
         str += "NOM: " + this.getLast_name() + "\n";
         str += "PRENOM: " + this.getFirst_name() + "\n";
         str += "Mail: " + this.getEmail() + "\n";

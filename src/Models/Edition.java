@@ -2,24 +2,24 @@ package Models;
 
 public class Edition {
 
-    private int id_edition;
+    private int id;
     private String name;
 
     public Edition() {
-        this.id_edition = 0;
+        this.id = 0;
         this.name = "";
     }
-    public Edition(int id_edition, String name) {
-        this.id_edition = id_edition;
+    public Edition(int id, String name) {
+        this.id = id;
         this.name = name;
     }
 
-    public int getId_edition() {
-        return id_edition;
+    public int getId() {
+        return id;
     }
 
-    public void setId_edition(int id_edition) {
-        this.id_edition = id_edition;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

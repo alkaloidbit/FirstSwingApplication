@@ -1,24 +1,24 @@
 package Models;
 
 public class Genre {
-    private int id_genre;
+    private int id;
     private String name;
 
     public Genre() {
-        this.id_genre = 0;
+        this.id = 0;
         this.name = "";
     }
-    public Genre(int id_genre, String name) {
-        this.id_genre = id_genre;
+    public Genre(int id, String name) {
+        this.id = id;
         this.name = name;
     }
 
-    public int getId_genre() {
-        return id_genre;
+    public int getId() {
+        return id;
     }
 
-    public void setId_genre(int id_genre) {
-        this.id_genre = id_genre;
+    public void setId_genre(int id) {
+        this.id = id;
     }
 
     public String getName() {

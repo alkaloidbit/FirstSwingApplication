@@ -1,7 +1,7 @@
 package Models;
 
 public class Document {
-    private int id_document;
+    private int id;
     private String title;
     private int pages_nbr;
     private int id_edition;
@@ -10,20 +10,20 @@ public class Document {
     public Document() {
     }
 
-    public Document(int id_document, String title, int pages_nbr, int id_edition, int year) {
-        this.id_document = id_document;
+    public Document(int id, String title, int pages_nbr, int id_edition, int year) {
+        this.id = id;
         this.title = title;
         this.pages_nbr = pages_nbr;
         this.id_edition = id_edition;
         this.year = year;
     }
 
-    public int getId_document() {
-        return id_document;
+    public int getId() {
+        return id;
     }
 
-    public void setId_document(int id_document) {
-        this.id_document = id_document;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
