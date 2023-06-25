@@ -61,7 +61,7 @@ public class UserDAO extends DAO<User> {
                 user.setId(results.getInt("id_user"));
                 user.setEmail(results.getString("email"));
                 user.setIs_admin(results.getInt("is_admin"));
-                user.setPassword(results.getString("passwd"));
+                user.setPassword(results.getString("password"));
                 users.add(user);
             }
 

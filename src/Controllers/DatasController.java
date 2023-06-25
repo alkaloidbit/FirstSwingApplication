@@ -44,7 +44,7 @@ public class DatasController {
     }
 
     public Edition getEditionById(int id){
-        for(Edition ed: this.ListEditionCombo){
+        for(Edition ed: DatasController.ListEditionCombo){
             if(ed.getId() == id){
                 return ed;
             }

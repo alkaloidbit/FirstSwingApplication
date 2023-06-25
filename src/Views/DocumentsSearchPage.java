@@ -159,7 +159,7 @@ public class DocumentsSearchPage extends JFrame {
                 Document document = getTextFieldsValues();
                 if (document == null) {
                     lblInfo.setText("Informations incomplètes");
-                } else if (document.getId_document() == 0) {
+                } else if (document.getId() == 0) {
                     lblInfo.setText("L'id n'est pas renseigné");
                 } else {
                     DocumentDAO documentDAO1 = new DocumentDAO();
@@ -176,7 +176,7 @@ public class DocumentsSearchPage extends JFrame {
                 Document document = getTextFieldsValues();
                 if (document == null) {
                     lblInfo.setText("Informations incomplètes");
-                } else if (document.getId_document() == 0) {
+                } else if (document.getId() == 0) {
                     lblInfo.setText("L'id n'est pas renseigné");
                 } else {
                     DocumentDAO documentDAO1 = new DocumentDAO();
@@ -256,9 +256,9 @@ public class DocumentsSearchPage extends JFrame {
                 tfTitle.setText(doc.getTitle());
                 tfDocNbPages.setText(String.valueOf(doc.getPages_nbr()));
                 tfYear.setText(String.valueOf(doc.getYear()));
-                lblDocIdValue.setText(String.valueOf(doc.getId_document()));
+                lblDocIdValue.setText(String.valueOf(doc.getId()));
                 DatasController dc = new DatasController();
-                Edition ed = dc.getEditionById(doc.getId_edition());
+                Edition ed = dc.getEditionById(doc.getEdition().getId());
                 cbEdtion.setSelectedItem(ed);
             }
         });
@@ -324,7 +324,7 @@ public class DocumentsSearchPage extends JFrame {
                 if(user == null){
                     lblInfo.setText("Informations incomplètes");
                 }
-                else if(user.getId_user()== 0){
+                else if(user.getId()== 0){
                     lblInfo.setText("L'id n'est pas renseigné");
                 }
                 else{
@@ -343,7 +343,7 @@ public class DocumentsSearchPage extends JFrame {
                 if(user == null){
                     lblInfo.setText("Informations incomplètes");
                 }
-                else if(user.getId_user()== 0){
+                else if(user.getId()== 0){
                     lblInfo.setText("L'id n'est pas renseigné");
                 }
                 else{
@@ -379,8 +379,8 @@ public class DocumentsSearchPage extends JFrame {
                 tfEmail.setText(user.getEmail());
                 tfUserFirstName.setText(user.getFirst_name());
                 tfUserLastName.setText(user.getLast_name());
-                lblUserIdValue.setText(String.valueOf(user.getId_user()));
-                cbAdmin.setSelectedItem(user.getId_user());
+                lblUserIdValue.setText(String.valueOf(user.getId()));
+                cbAdmin.setSelectedItem(user.getId());
                 tfUserPass.setText(user.getPassword());
 
             }
@@ -399,14 +399,14 @@ public class DocumentsSearchPage extends JFrame {
         if(tfTitle.getText().equals("") ||tfDocNbPages.getText().equals("")||tfYear.getText().equals("") || cbEdtion.getSelectedItem().equals(""))
             return null;
         if(lblDocIdValue.getText().equals(""))
-            viewDoc.setId_document(0);
+            viewDoc.setId(0);
         else{
-            viewDoc.setId_document(Integer.parseInt(lblDocIdValue.getText()));
+            viewDoc.setId(Integer.parseInt(lblDocIdValue.getText()));
         }
         viewDoc.setTitle(tfTitle.getText());
         viewDoc.setPages_nbr(Integer.parseInt(tfDocNbPages.getText()));
-        viewDoc.setYear(Integer.parseInt(tfYear.getText()));
-        viewDoc.setId_edition(((Edition) cbEdtion.getSelectedItem()).getId_edition());
+        viewDoc.setYear(tfYear.getText());
+        viewDoc.setEdition(((Edition) cbEdtion.getSelectedItem()));
         return viewDoc;
     }
 
@@ -439,9 +439,9 @@ public class DocumentsSearchPage extends JFrame {
         if(tfEmail.getText().equals("") ||tfUserFirstName.getText().equals("")||tfUserLastName.getText().equals("") ||tfEmail.getText().equals("")|| cbAdmin.getSelectedItem().equals(""))
             return null;
         if(lblUserIdValue.getText().equals(""))
-            viewUser.setId_user(0);
+            viewUser.setId(0);
         else{
-            viewUser.setId_user(Integer.parseInt(lblUserIdValue.getText()));
+            viewUser.setId(Integer.parseInt(lblUserIdValue.getText()));
         }
         viewUser.setPassword(tfUserPass.getText());
         viewUser.setEmail(tfEmail.getText());

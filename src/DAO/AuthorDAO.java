@@ -1,13 +1,13 @@
 package DAO;
 
 import Models.Author;
-import Models.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 public class AuthorDAO extends DAO<Author> {
 
@@ -38,7 +38,25 @@ public class AuthorDAO extends DAO<Author> {
     @Override
     public ArrayList<Author> findAll() {
 
-        return null;
+        List<Author> authors = new ArrayList<>();
+        try {
+            ResultSet results = connect
+                    .createStatement()
+                    .executeQuery(
+                            "SELECT * FROM author"
+                    );
+            while ( results.next() ) {
+                Author author = new Author();
+                author.setFirst_name(results.getString("first_name"));
+                author.setLast_name(results.getString("last_name"));
+                author.setId(results.getInt("id_author"));
+                authors.add(author);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return (ArrayList<Author>) authors;
     }
 
     @Override
