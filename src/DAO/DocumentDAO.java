@@ -167,7 +167,8 @@ public class DocumentDAO extends DAO<Document> {
                                     " pages_nbr = '" + obj.getPages_nbr() + "', " +
                                     " id_edition = '" + obj.getEdition().getId() + "', " +
                                     " id_genre = '" + obj.getGenre().getId() + "', " +
-                                    " year = '" + obj.getYear() + "'");
+                                    " year = '" + obj.getYear() + "'" +
+                                    " Where id_document = " + obj.getId() + "");
             obj = this.find(obj.getId());
         } catch (SQLException e) {
             e.printStackTrace();

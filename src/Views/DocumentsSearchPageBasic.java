@@ -18,7 +18,7 @@ public class DocumentsSearchPageBasic extends JFrame {
     private JTable tbDocuments;
 
     public DocumentsSearchPageBasic() throws HeadlessException {
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(1200, 1000);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
