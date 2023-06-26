@@ -8,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 public class DocumentDAO extends DAO<Document> {
 
@@ -104,12 +103,13 @@ public class DocumentDAO extends DAO<Document> {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } 
+        }
         return documents;
     }
 
     @Override
     public Document create(Document obj) {
+        System.out.println(obj.getAuthors());
         try {
             if (obj.getGenre().getId() == 0) {
                 GenreDAO genreDAO = new GenreDAO();
@@ -119,6 +119,13 @@ public class DocumentDAO extends DAO<Document> {
             if (obj.getEdition().getId() == 0) {
                 EditionDAO editionDAO = new EditionDAO();
                 obj.setEdition(editionDAO.create(obj.getEdition()));
+            }
+
+            // Creating a list
+            ArrayList<Author> authorsList = new ArrayList<Author>();
+            for(Author a: obj.getAuthors()) {
+                authorsList.add(a);
+                System.out.println(a);
             }
 
             PreparedStatement prepare = this.connect
@@ -136,6 +143,16 @@ public class DocumentDAO extends DAO<Document> {
             if (rs != null && rs.next()) {
                 int key = rs.getInt(1);
                 obj = this.find(key);
+            }
+
+            for(Author a: authorsList) {
+                System.out.println(a);
+                PreparedStatement prep = this.connect
+                                    .prepareStatement(
+                    "INSERT INTO compose (id_author, id_document) VALUES (?, ?)");
+                prep.setInt(1, a.getId());
+                prep.setInt(2, obj.getId());
+                prep.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();

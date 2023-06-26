@@ -9,7 +9,7 @@ INSERT INTO `user` (`id_user`, `is_admin`, `first_name`, `last_name`, `email`, `
 
 INSERT INTO `edition` (`id_edition`, `name`) VALUES (NULL, 'Hoboken, NJ : John Wiley & Sons, Inc.');
 INSERT INTO `genre` (`id_genre`, `name`) VALUES (NULL, 'For dummies');
-INSERT INTO `author` (`id_author`, `first_name`, `last_name`) VALUES (NULL, 'Mueller', 'John Paul');
+INSERT INTO `author` (`id_author`, `first_name`, `last_name`) VALUES (NULL,'John Paul', 'Mueller' );
 INSERT INTO `document` (`id_document`, `title`, `pages_nbr`, `id_edition`, `id_genre`, `year`) VALUES (NULL, 'Beginning programming with Python ', '392', 1, 1,  '2018');
 INSERT INTO `compose` (`id_author`, `id_document`) VALUES (1, 1);
 

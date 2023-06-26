@@ -225,8 +225,8 @@ public class DocumentsSearchPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Author authorView = new Author();
                 String[] authorNames = tfAuthor.getText().split(" ");
-                authorView.setFirst_name(authorNames[0]);
-                authorView.setLast_name(authorNames[1]);
+                authorView.setFirst_name(authorNames[1]);
+                authorView.setLast_name(authorNames[0]);
                 AuthorDAO authorDAO1 = new AuthorDAO();
                 Author resultCreateAut = authorDAO1.create(authorView);
                 // Mise à jour DataController
@@ -242,9 +242,9 @@ public class DocumentsSearchPage extends JFrame {
                     cbAuteur.addItem(aut);
                 }*/
 
-                authorsList.add(authorView);
-                cbAuteur.addItem(authorView);
-                autModel.addElement(authorView);
+                authorsList.add(resultCreateAut);
+                cbAuteur.addItem(resultCreateAut);
+                autModel.addElement(resultCreateAut);
                 lstAuthors.setModel(autModel);
             }
         });
@@ -472,6 +472,9 @@ public class DocumentsSearchPage extends JFrame {
             docAuthors.add((Author) lstAuthorsDoc.getModel().getElementAt(i));
         }
         viewDoc.setAuthors(docAuthors);
+
+        System.out.println(viewDoc);
+
         return viewDoc;
     }
 
