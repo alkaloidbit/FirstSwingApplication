@@ -175,6 +175,12 @@ public class DocumentDAO extends DAO<Document> {
             }
             editionDAO.update(obj.getEdition());
 
+            deleteFromCompose(obj);
+            for (Author aut: obj.getAuthors()){
+                createCompose(obj,aut);
+            }
+
+
             this.connect
                     .createStatement(
                             ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -206,5 +212,35 @@ public class DocumentDAO extends DAO<Document> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void deleteFromCompose(Document obj) {
+        try {
+            this.connect
+                    .createStatement(
+                            ResultSet.TYPE_SCROLL_INSENSITIVE,
+                            ResultSet.CONCUR_UPDATABLE
+                    ).executeUpdate(
+                            "DELETE FROM compose WHERE id_document = " + obj.getId()
+                    );
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void createCompose(Document obj, Author aut) {
+        try {
+            PreparedStatement prepare = this.connect
+                    .prepareStatement(
+                            "INSERT INTO compose (id_author, id_document) VALUES (?,?)",
+                            Statement.RETURN_GENERATED_KEYS
+                    );
+            prepare.setInt(1, aut.getId());
+            prepare.setInt(2, obj.getId());
+            prepare.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
