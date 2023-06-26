@@ -1,5 +1,6 @@
 package Views;
 
+import Models.Author;
 import Models.Document;
 
 import javax.swing.*;
@@ -18,13 +19,20 @@ public class DocumentDetailsPage extends JFrame {
     private JLabel lblNbPagesValue;
     private JLabel lblEdition;
     private JLabel lblEditionValue;
+    private JLabel lblGenreValue;
+    private JLabel lblGenre;
 
     public DocumentDetailsPage(Document doc) throws HeadlessException {
         lblNbPagesValue.setText(String.valueOf(doc.getPages_nbr()));
         lblTitleValue.setText(doc.getTitle());
         lblYearValue.setText(String.valueOf(doc.getYear()));
-        lblAuthorValue.setText("A compléter");
-        lblEditionValue.setText("A compléter");
+        String authors = "";
+        for (Author author : doc.getAuthors()){
+            authors += author.getFirst_name() + " " + author.getFirst_name() + " / ";
+        }
+        lblAuthorValue.setText(authors);
+        lblEditionValue.setText(doc.getEdition().getName());
+        lblGenre.setText(doc.getGenre().getName());
         setContentPane(panelOut);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 400);

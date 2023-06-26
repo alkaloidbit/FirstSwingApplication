@@ -1,12 +1,8 @@
 package Views;
 
 import Controllers.DatasController;
-import DAO.AuthorDAO;
-import DAO.DocumentDAO;
-import DAO.EditionDAO;
-import DAO.UserDAO;
+import DAO.*;
 import Models.*;
-import DAO.GenreDAO;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -78,11 +74,17 @@ public class DocumentsSearchPage extends JFrame {
     private JButton btnRemoveAuthor;
     private JScrollPane spAuthorsList;
     private JScrollPane spAuthorsDocList;
+    private JPanel pGenre;
+    private JComboBox cbGenre;
+    private JTextField tfGenre;
+    private JButton btnGenre;
+    private JLabel lblGenre;
 
     private static ArrayList<Author> authorsList;
     private static ArrayList<Document> documentsList;
     private static ArrayList<Edition> editionsList;
-    private static ArrayList<User> usersList;
+    private static ArrayList<Genre> genresList;
+
 
 
     public DocumentsSearchPage(){
@@ -124,6 +126,13 @@ public class DocumentsSearchPage extends JFrame {
         //DatasController dce = new DatasController();
         //dce.setListEditionCombo(editionsList);
 
+        // Récupération des genres pour le comboBox
+        GenreDAO genreDAO = new GenreDAO();
+        genresList = genreDAO.findAll();
+        // Injection dans le combobox
+        for (Genre ge : genresList) {
+            cbGenre.addItem(ge);
+        }
 
         // Récupération des auteurs pour le comboBox
         AuthorDAO authorDAO = new AuthorDAO();
@@ -225,8 +234,8 @@ public class DocumentsSearchPage extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 Author authorView = new Author();
                 String[] authorNames = tfAuthor.getText().split(" ");
-                authorView.setFirst_name(authorNames[1]);
-                authorView.setLast_name(authorNames[0]);
+                authorView.setFirst_name(authorNames[0]);
+                authorView.setLast_name(authorNames[1]);
                 AuthorDAO authorDAO1 = new AuthorDAO();
                 Author resultCreateAut = authorDAO1.create(authorView);
                 // Mise à jour DataController
@@ -242,9 +251,9 @@ public class DocumentsSearchPage extends JFrame {
                     cbAuteur.addItem(aut);
                 }*/
 
-                authorsList.add(resultCreateAut);
-                cbAuteur.addItem(resultCreateAut);
-                autModel.addElement(resultCreateAut);
+                authorsList.add(authorView);
+                cbAuteur.addItem(authorView);
+                autModel.addElement(authorView);
                 lstAuthors.setModel(autModel);
             }
         });
@@ -271,6 +280,17 @@ public class DocumentsSearchPage extends JFrame {
                 cbEdtion.addItem(editionView);
             }
         });
+        // Fonction de création de genre
+        btnGenre.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Genre genreView = new Genre();
+                genreView.setName(tfGenre.getText());
+                GenreDAO genreDAO = new GenreDAO();
+                genreView = genreDAO.create(genreView);
+                cbGenre.addItem(genreView);
+            }
+        });
         // Chargement des champs doc lorsqu'une ligne est sélectionnée
         tbDocuments.addComponentListener(new ComponentAdapter() {
         });
@@ -290,6 +310,7 @@ public class DocumentsSearchPage extends JFrame {
                 //DatasController dc = new DatasController();
                 //Edition ed = dc.getEditionById(doc.getId_edition());
                 cbEdtion.getModel().setSelectedItem(doc.getEdition());
+                cbGenre.getModel().setSelectedItem(doc.getGenre());
                 // Injection dans la jList Auteurs du doc
                 autModelDoc.addAll(doc.getAuthors());
             }
@@ -442,6 +463,7 @@ public class DocumentsSearchPage extends JFrame {
                 }
             }
         });
+
     }
     /*********************************************************************************************** FONCTIONS DOCUMENTS *********************************************************************************/
 
@@ -462,19 +484,12 @@ public class DocumentsSearchPage extends JFrame {
         viewDoc.setPages_nbr(Integer.parseInt(tfDocNbPages.getText()));
         viewDoc.setYear(tfYear.getText());
         viewDoc.setEdition((Edition) cbEdtion.getSelectedItem());
-        GenreDAO gdao = new GenreDAO();
-        Genre g = gdao.find(2);
-
-        viewDoc.setGenre(g);
-
+        viewDoc.setGenre((Genre) cbGenre.getSelectedItem());
         ArrayList<Author> docAuthors = new ArrayList<Author>();
         for(int i = 0; i < lstAuthorsDoc.getModel().getSize(); i++){
             docAuthors.add((Author) lstAuthorsDoc.getModel().getElementAt(i));
         }
         viewDoc.setAuthors(docAuthors);
-
-        System.out.println(viewDoc);
-
         return viewDoc;
     }
 
