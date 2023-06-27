@@ -30,7 +30,6 @@ CREATE TABLE `edition` (
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id_edition`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
-
 CREATE TABLE `genre` (
   `id_genre` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -46,6 +45,8 @@ CREATE TABLE `user` (
   `password` varchar (255) NOT NULL,
   PRIMARY KEY (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
+
+
 ALTER TABLE `user` ADD CONSTRAINT UNIQ_8567 UNIQUE(`email`);
 ALTER TABLE `document` ADD FOREIGN KEY (`id_edition`) REFERENCES `edition` (`id_edition`);
 ALTER TABLE `document` ADD FOREIGN KEY (`id_genre`) REFERENCES `genre` (`id_genre`);
