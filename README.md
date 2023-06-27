@@ -32,4 +32,6 @@ Ci-dessous les liens vers les diagrammes UML et vers le MCD.
 
 [Uses Cases Diagram](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/diagrams/Projet_bibli_CU_V2.drawio.png)
 
+[Diagramme entites-relations](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/diagrams/Le%20mod%C3%A8le%20relationnel%20de%20la%20base%20de%20donn%C3%A9es.pdf)
+
 Les 40 requetes sql sont [ici] (https://github.com/alkaloidbit/FirstSwingApplication/blob/main/sql/fourtyqueries.sql)
