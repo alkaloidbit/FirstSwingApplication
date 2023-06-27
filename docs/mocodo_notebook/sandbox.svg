@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="478" height="303" viewBox="0 0 478 303" xmlns="http://www.w3.org/2000/svg">
+<rect id="frame" x="0" y="0" width="478" height="303" fill="#FFF" stroke="none" stroke-width="0"/>
+
+<!-- Association publish -->
+<g>
+	<line x1="62" y1="147" x2="62" y2="47" stroke="#000" stroke-width="1"/>
+	<text x="67" y="92" fill="#000" font-family="Futura" font-size="11">0,1</text>
+	<line x1="189" y1="47" x2="62" y2="47" stroke="#000" stroke-width="1"/>
+	<text x="124" y="63" fill="#000" font-family="Futura" font-size="11">1,N</text>
+	<g>
+		<path d="M91 18 a14 14 90 0 1 14 14 V46 h-86 V32 a14 14 90 0 1 14 -14" fill="#FFF" stroke="#FFF" stroke-width="0"/>
+		<path d="M105 46 v16 a14 14 90 0 1 -14 14 H33 a14 14 90 0 1 -14 -14 V46 H86" fill="#FFF" stroke="#FFF" stroke-width="0"/>
+		<rect x="19" y="18" width="86" height="58" fill="none" rx="14" stroke="#000" stroke-width="1.5"/>
+		<line x1="19" y1="46" x2="105" y2="46" stroke="#000" stroke-width="1.5"/>
+		<text x="26" y="39.3" fill="#000" font-family="Copperplate" font-size="18">publish</text>
+		<text x="26" y="64.1" fill="#000" font-family="Gill Sans" font-size="15">year</text>
+	</g>
+</g>
+
+<!-- Association belongs -->
+<g>
+	<line x1="62" y1="147" x2="189" y2="147" stroke="#000" stroke-width="1"/>
+	<text x="120" y="163" fill="#000" font-family="Futura" font-size="11">0,1</text>
+	<line x1="299" y1="147" x2="189" y2="147" stroke="#000" stroke-width="1"/>
+	<text x="239" y="163" fill="#000" font-family="Futura" font-size="11">1,N</text>
+	<g>
+		<path d="M220 118 a14 14 90 0 1 14 14 V146 h-90 V132 a14 14 90 0 1 14 -14" fill="#FFF" stroke="#FFF" stroke-width="0"/>
+		<path d="M234 146 v16 a14 14 90 0 1 -14 14 H158 a14 14 90 0 1 -14 -14 V146 H90" fill="#FFF" stroke="#FFF" stroke-width="0"/>
+		<rect x="144" y="118" width="90" height="58" fill="none" rx="14" stroke="#000" stroke-width="1.5"/>
+		<line x1="144" y1="146" x2="234" y2="146" stroke="#000" stroke-width="1.5"/>
+		<text x="151" y="139.3" fill="#000" font-family="Copperplate" font-size="18">belongs</text>
+	</g>
+</g>
+
+<!-- Association compose -->
+<g>
+	<line x1="189" y1="247" x2="62" y2="247" stroke="#000" stroke-width="1"/>
+	<text x="123" y="263" fill="#000" font-family="Futura" font-size="11">0,N</text>
+	<line x1="62" y1="147" x2="62" y2="247" stroke="#000" stroke-width="1"/>
+	<text x="67" y="210" fill="#000" font-family="Futura" font-size="11">1,N</text>
+	<g>
+		<path d="M93 218 a14 14 90 0 1 14 14 V246 h-90 V232 a14 14 90 0 1 14 -14" fill="#FFF" stroke="#FFF" stroke-width="0"/>
+		<path d="M107 246 v16 a14 14 90 0 1 -14 14 H31 a14 14 90 0 1 -14 -14 V246 H90" fill="#FFF" stroke="#FFF" stroke-width="0"/>
+		<rect x="17" y="218" width="90" height="58" fill="none" rx="14" stroke="#000" stroke-width="1.5"/>
+		<line x1="17" y1="246" x2="107" y2="246" stroke="#000" stroke-width="1.5"/>
+		<text x="24" y="239.3" fill="#000" font-family="Copperplate" font-size="18">compose</text>
+	</g>
+</g>
+
+<!-- Entity edition -->
+<g>
+	<g>
+		<rect x="148" y="9" width="82" height="30" fill="#FFF" stroke="#FFF" stroke-width="0" opacity="1"/>
+		<rect x="148" y="39" width="82" height="46" fill="#FFF" stroke="#FFF" stroke-width="0" opacity="1"/>
+		<rect x="148" y="9" width="82" height="76" fill="none" stroke="#000" stroke-width="1.5" opacity="1"/>
+		<line x1="148" y1="39" x2="230" y2="39" stroke="#000" stroke-width="1.5"/>
+	</g>
+	<text x="156" y="30.3" fill="#000" font-family="Copperplate" font-size="18">edition</text>
+	<text x="156" y="56.1" fill="#000" font-family="Gill Sans" font-size="15">id_edition</text>
+	<line x1="156" y1="59" x2="220" y2="59" stroke="#000" stroke-width="1"/>
+	<text x="156" y="73.1" fill="#000" font-family="Gill Sans" font-size="15">name</text>
+</g>
+
+<!-- Entity document -->
+<g>
+	<g>
+		<rect x="9" y="100" width="106" height="30" fill="#FFF" stroke="#FFF" stroke-width="0" opacity="1"/>
+		<rect x="9" y="130" width="106" height="64" fill="#FFF" stroke="#FFF" stroke-width="0" opacity="1"/>
+		<rect x="9" y="100" width="106" height="94" fill="none" stroke="#000" stroke-width="1.5" opacity="1"/>
+		<line x1="9" y1="130" x2="115" y2="130" stroke="#000" stroke-width="1.5"/>
+	</g>
+	<text x="18" y="121.3" fill="#000" font-family="Copperplate" font-size="18">document</text>
+	<text x="17" y="147.1" fill="#000" font-family="Gill Sans" font-size="15">id_document</text>
+	<line x1="17" y1="150" x2="100" y2="150" stroke="#000" stroke-width="1"/>
+	<text x="17" y="164.1" fill="#000" font-family="Gill Sans" font-size="15">title</text>
+	<text x="17" y="181" fill="#000" font-family="Gill Sans" font-size="15">pages_nbr</text>
+</g>
+
+<!-- Entity genre -->
+<g>
+	<g>
+		<rect x="263" y="109" width="72" height="30" fill="#FFF" stroke="#FFF" stroke-width="0" opacity="1"/>
+		<rect x="263" y="139" width="72" height="46" fill="#FFF" stroke="#FFF" stroke-width="0" opacity="1"/>
+		<rect x="263" y="109" width="72" height="76" fill="none" stroke="#000" stroke-width="1.5" opacity="1"/>
+		<line x1="263" y1="139" x2="335" y2="139" stroke="#000" stroke-width="1.5"/>
+	</g>
+	<text x="272" y="130.3" fill="#000" font-family="Copperplate" font-size="18">genre</text>
+	<text x="271" y="156.1" fill="#000" font-family="Gill Sans" font-size="15">id_genre</text>
+	<line x1="271" y1="159" x2="327" y2="159" stroke="#000" stroke-width="1"/>
+	<text x="271" y="173.1" fill="#000" font-family="Gill Sans" font-size="15">name</text>
+</g>
+
+<!-- Entity user -->
+<g>
+	<g>
+		<rect x="393" y="75" width="76" height="30" fill="#FFF" stroke="#FFF" stroke-width="0" opacity="1"/>
+		<rect x="393" y="105" width="76" height="114" fill="#FFF" stroke="#FFF" stroke-width="0" opacity="1"/>
+		<rect x="393" y="75" width="76" height="144" fill="none" stroke="#000" stroke-width="1.5" opacity="1"/>
+		<line x1="393" y1="105" x2="469" y2="105" stroke="#000" stroke-width="1.5"/>
+	</g>
+	<text x="409" y="96.3" fill="#000" font-family="Copperplate" font-size="18">user</text>
+	<text x="401" y="122.1" fill="#000" font-family="Gill Sans" font-size="15">id_user</text>
+	<line x1="401" y1="125" x2="449" y2="125" stroke="#000" stroke-width="1"/>
+	<text x="401" y="139.1" fill="#000" font-family="Gill Sans" font-size="15">is_admin</text>
+	<text x="401" y="156.1" fill="#000" font-family="Gill Sans" font-size="15">name</text>
+	<text x="401" y="173.1" fill="#000" font-family="Gill Sans" font-size="15">surname</text>
+	<text x="401" y="190" fill="#000" font-family="Gill Sans" font-size="15">email</text>
+	<text x="401" y="207" fill="#000" font-family="Gill Sans" font-size="15">password</text>
+</g>
+
+<!-- Entity author -->
+<g>
+	<g>
+		<rect x="147" y="200" width="84" height="30" fill="#FFF" stroke="#FFF" stroke-width="0" opacity="1"/>
+		<rect x="147" y="230" width="84" height="64" fill="#FFF" stroke="#FFF" stroke-width="0" opacity="1"/>
+		<rect x="147" y="200" width="84" height="94" fill="none" stroke="#000" stroke-width="1.5" opacity="1"/>
+		<line x1="147" y1="230" x2="231" y2="230" stroke="#000" stroke-width="1.5"/>
+	</g>
+	<text x="156" y="221.3" fill="#000" font-family="Copperplate" font-size="18">author</text>
+	<text x="155" y="247.1" fill="#000" font-family="Gill Sans" font-size="15">id_author</text>
+	<line x1="155" y1="250" x2="217" y2="250" stroke="#000" stroke-width="1"/>
+	<text x="155" y="264.1" fill="#000" font-family="Gill Sans" font-size="15">first_name</text>
+	<text x="155" y="281" fill="#000" font-family="Gill Sans" font-size="15">last_name</text>
+</g>
+</svg>

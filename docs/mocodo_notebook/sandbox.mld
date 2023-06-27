@@ -1,0 +1,24 @@
+%%mocodo
+:
+Genre: id_genre, nom
+:::
+Exemplaire: id_exemplaire, #id_document->Document->id_document
+:
+Emprunt: id_emprunt, date_emprunt, date_retour, #id_exemplaire->Exemplaire->id_exemplaire
+:
+
+
+:
+Appartenir: #id_document->Document->id_document, _#id_genre->Genre->id_genre
+:
+Document: id_document, titre, nbre_pages, #id_editeur->Editeur->id_editeur, Année
+:::::
+
+
+:
+Auteur: id_auteur, nom
+:
+Ecrire: #id_auteur->Auteur->id_auteur, _#id_document->Document->id_document
+:
+Editeur: id_editeur, denomination
+:::

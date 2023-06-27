@@ -1,0 +1,8 @@
+
+
+As of now, trying to delete an author raise an error 
+
+	"Cannot delete or update a parent row: a foreign key constraint fails 
+	(`gestion_bu`.`compose`, CONSTRAINT `compose_ibfk_2` FOREIGN KEY (`id_author`) REFERENCES `author` (`id_author`))"
+
+it means i should add an "ON DELETE CASCADE " clause on compose table. Lets try that ....

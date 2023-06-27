@@ -1,0 +1,33 @@
+{
+  "width": 478,
+  "height": 303,
+  "cx": [
+    [ "publish", 62 ],
+    [ "edition", 189 ],
+    [ "document", 62 ],
+    [ "belongs", 189 ],
+    [ "genre", 299 ],
+    [ "user", 431 ],
+    [ "compose", 62 ],
+    [ "author", 189 ]
+  ],
+  "cy": [
+    [ "publish", 47 ],
+    [ "edition", 47 ],
+    [ "document", 147 ],
+    [ "belongs", 147 ],
+    [ "genre", 147 ],
+    [ "user", 147 ],
+    [ "compose", 247 ],
+    [ "author", 247 ]
+  ],
+  "shift": [
+    [ "publish,document,0", 0 ],
+    [ "publish,edition,0", 0 ],
+    [ "belongs,document,0", 0 ],
+    [ "belongs,genre,0", 0 ],
+    [ "compose,author,0", 0 ],
+    [ "compose,document,0", 0 ]
+  ],
+  "ratio": []
+}

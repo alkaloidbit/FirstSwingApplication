@@ -1,0 +1,60 @@
+<html>
+<head>
+<meta charset='utf-8'>
+<style>
+  #mld .relation { font-variant: small-caps; font-weight: bold }
+  #mld .primary { text-decoration: underline }
+  #mld .foreign { font-style: oblique }
+  #mld .normal { }
+</style>
+</head>
+<body>
+<div id='mld'>
+<div>
+  <span class='relation'>author</span> (
+    <span class='primary'>id_author</span>,
+    <span class='normal'>first_name</span>,
+    <span class='normal'>last_name</span>
+  )
+</div>
+<div>
+  <span class='relation'>compose</span> (
+    <span class='foreign primary'>#id_author</span>,
+    <span class='foreign primary'>#id_document</span>
+  )
+</div>
+<div>
+  <span class='relation'>document</span> (
+    <span class='primary'>id_document</span>,
+    <span class='normal'>title</span>,
+    <span class='normal'>pages_nbr</span>,
+    <span class='foreign'>#id_edition</span>,
+    <span class='normal'>year</span>,
+    <span class='foreign'>#id_genre</span>
+  )
+</div>
+<div>
+  <span class='relation'>edition</span> (
+    <span class='primary'>id_edition</span>,
+    <span class='normal'>name</span>
+  )
+</div>
+<div>
+  <span class='relation'>genre</span> (
+    <span class='primary'>id_genre</span>,
+    <span class='normal'>name</span>
+  )
+</div>
+<div>
+  <span class='relation'>user</span> (
+    <span class='primary'>id_user</span>,
+    <span class='normal'>is_admin</span>,
+    <span class='normal'>name</span>,
+    <span class='normal'>surname</span>,
+    <span class='normal'>email</span>,
+    <span class='normal'>password</span>
+  )
+</div>
+</div>
+</body>
+</html>

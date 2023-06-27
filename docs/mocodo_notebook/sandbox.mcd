@@ -1,0 +1,17 @@
+publish, 10 document, 1N edition: year [date]
+edition: id_edition [int(11)], name [varchar(50)]
+:
+:
+:
+
+document: id_document [int(11)], title [varchar(50)], pages_nbr [smallint]
+belongs, 01 document, 1N genre
+genre: id_genre [int(11)], name [varchar(50)]
+:
+user: id_user [int(11)], is_admin [boolean], name [varchar(255)], surname [varchar (255)], email [varchar (255)], password [varchar (255)]
+
+compose, 0N author, 1N document
+author: id_author [int(11)], first_name [varchar(50)], last_name [varchar(50)]
+:
+:
+:

@@ -31,20 +31,6 @@ CREATE TABLE `edition` (
   PRIMARY KEY (`id_edition`)
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
 
-CREATE TABLE `borrow` (
-  `id_copy` int(11),
-  `id_user` int(11),
-  `borrowing_start` date,
-  `borrowing_end` date,
-  PRIMARY KEY (`id_copy`, `id_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
-
-CREATE TABLE `copy` (
-  `id_copy` int(11) NOT NULL AUTO_INCREMENT,
-  `id_document` int(11) NOT NULL,
-  PRIMARY KEY (`id_copy`)
-) ENGINE=InnoDB DEFAULT CHARSET=UTF8MB4;
-
 CREATE TABLE `genre` (
   `id_genre` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -65,6 +51,3 @@ ALTER TABLE `document` ADD FOREIGN KEY (`id_edition`) REFERENCES `edition` (`id_
 ALTER TABLE `document` ADD FOREIGN KEY (`id_genre`) REFERENCES `genre` (`id_genre`);
 ALTER TABLE `compose` adD FOREIGN KEY (`id_document`) REFERENCES `document` (`id_document`) ON DELETE CASCADE;
 ALTER TABLE `compose` adD FOREIGN KEY (`id_author`) REFERENCES `author` (`id_author`) ON DELETE CASCADE;
-ALTER TABLE `borrow` ADD FOREIGN KEY (`id_user`) REFERENCES `user` (`id_user`);
-ALTER TABLE `borrow` ADD FOREIGN KEY (`id_copy`) REFERENCES `copy` (`id_copy`);
-ALTER TABLE `copy` ADD FOREIGN KEY (`id_document`) REFERENCES `document` (`id_document`);
