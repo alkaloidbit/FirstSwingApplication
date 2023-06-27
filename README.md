@@ -34,4 +34,4 @@ Ci-dessous les liens vers les diagrammes UML et vers le MCD.
 
 [Diagramme entites-relations](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/diagrams/Le%20mod%C3%A8le%20relationnel%20de%20la%20base%20de%20donn%C3%A9es.pdf)
 
-Les 40 requetes sql sont [ici] (https://github.com/alkaloidbit/FirstSwingApplication/blob/main/sql/fourtyqueries.sql)
+Les [40 requetes sql] (https://github.com/alkaloidbit/FirstSwingApplication/blob/main/sql/fourtyqueries.sql)
