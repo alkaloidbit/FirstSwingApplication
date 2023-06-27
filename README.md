@@ -12,7 +12,7 @@ Pour la telecharger, tu as plusieurs solutions:
 
         git clone https://github.com/alkaloidbit/FirstSwingApplication.git
      
-     Sinon, clique sur le bouton vert code ci dessus, puis "download zip"
+     Sinon, clique sur le bouton ![Pasted image](https://github.com/alkaloidbit/FirstSwingApplication/assets/38055982/789d8749-cc35-48d8-967e-2d7e891936c0) ci dessus, puis "download zip"
 
      A la racine du dossier FirstSwingApplication, tu trouveras un dossier sql contenant le script de
 
@@ -42,6 +42,8 @@ Pour la telecharger, tu as plusieurs solutions:
 Ci-dessous les liens vers les diagrammes UML et vers le MCD.
 
 [MCD](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/mocodo_notebook/sandbox.svg)
+
+
 
 [Uses Cases Diagram](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/diagrams/Projet_bibli_CU_V2.drawio.png)
 
