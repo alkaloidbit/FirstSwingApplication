@@ -10,8 +10,8 @@ Pour la telecharger, tu as plusieurs solutions:
 
   1) si tu as git installé, le plus simple est de cloner ce depot avec la commande suivante:
 
-       `git clone https:./github.com/alkaloidbit/FirstSwingApplication`
-
+        git clone https://github.com/alkaloidbit/FirstSwingApplication.git
+     
      Sinon, clique sur le bouton vert code ci dessus, puis "download zip"
 
      A la racine du dossier FirstSwingApplication, tu trouveras un dossier sql contenant le script de
