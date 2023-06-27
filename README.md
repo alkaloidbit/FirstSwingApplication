@@ -17,7 +17,12 @@ Pour la telecharger, tu as plusieurs solutions:
      A la racine du dossier FirstSwingApplication, tu trouveras un dossier sql contenant le script de
 
      creation de la base de donnee, ainsi qu'un script fixtures.sql qui va
-     peupler la base avec un jeu de donnees de test.
+
+     peupler la base avec un jeu de donnees de test. Une fois la base installée,
+
+     lance intellij, puis "File" / "Open" et choisi le dossier que tu as extrait
+     
+     precedement.
 
 ### Usage
 
@@ -27,4 +32,4 @@ Ci-dessous les liens vers les diagrammes UML et vers le MCD.
 
 [Uses Cases Diagram](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/diagrams/Projet_bibli_CU_V2.drawio.png)
 
-[Les 40 requetes sql](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/sql/fourtyqueries.sql)
+Les 40 requetes sql sont [ici] (https://github.com/alkaloidbit/FirstSwingApplication/blob/main/sql/fourtyqueries.sql)
