@@ -28,4 +28,10 @@ public class Genre {
     public void setName(String name) {
         this.name = name;
     }
+
+    
+    public String toString() {
+        String str = this.getName();
+        return str;
+    }
 }
