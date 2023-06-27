@@ -18,7 +18,20 @@ Pour la telecharger, tu as plusieurs solutions:
 
      creation de la base de donnee, ainsi qu'un script fixtures.sql qui va
 
-     peupler la base avec un jeu de donnees de test. Une fois la base installée,
+     peupler la base avec un jeu de donnees de test. Depuis ce dossier,  tu peux lancer un terminal, ou une invite de commande
+
+     sous window et faire:
+
+    mysql -u root -pRvTC6F8D < install_db.sql
+
+    Cela devrait avoir cree la BDD, ensuite tu peu faire:
+
+    mysql -u root -pRvTC6F8D < fixtures.sql
+
+    Cela va installer les donner de test.
+
+
+     Une fois la base installée,
 
      lance intellij, puis "File" / "Open" et choisi le dossier que tu as extrait
      
