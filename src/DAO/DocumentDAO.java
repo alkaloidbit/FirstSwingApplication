@@ -173,13 +173,12 @@ public class DocumentDAO extends DAO<Document> {
             if (obj.getEdition().getId() == 0) {
                 obj.setEdition(editionDAO.create(obj.getEdition()));
             }
-            editionDAO.update(obj.getEdition());
 
+            editionDAO.update(obj.getEdition());
             deleteFromCompose(obj);
             for (Author aut: obj.getAuthors()){
                 createCompose(obj,aut);
             }
-
 
             this.connect
                     .createStatement(

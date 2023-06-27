@@ -251,9 +251,9 @@ public class DocumentsSearchPage extends JFrame {
                     cbAuteur.addItem(aut);
                 }*/
 
-                authorsList.add(authorView);
-                cbAuteur.addItem(authorView);
-                autModel.addElement(authorView);
+                authorsList.add(resultCreateAut);
+                cbAuteur.addItem(resultCreateAut);
+                autModel.addElement(resultCreateAut);
                 lstAuthors.setModel(autModel);
             }
         });
