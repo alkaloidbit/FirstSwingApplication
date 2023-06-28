@@ -24,7 +24,7 @@ Pour la telecharger, tu as plusieurs solutions:
 4. Lance le programme avec le bouton `run`
 ### Usage
 
-![Video presentation](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/presentation_projet_firstswingapp.webm)
+![Video presentation](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/login.webm)
 
 
 #### Login
