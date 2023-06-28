@@ -24,7 +24,25 @@ Pour la telecharger, tu as plusieurs solutions:
 4. Lance le programme avec le bouton `run`
 ### Usage
 
-[Screencast Login](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/login.mp4)
+## Instructions 
+
+- ![Login Page](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/login.webm)
+
+- ![Admin document creation](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/admin_document_creation.webm)
+
+- ![Admin document update](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/admin_document_update.webm)
+
+- ![Admin document deletion](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/admin_document_deletion.webm)
+
+- ![Admin document show](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/admin_document_show.webm)
+
+- ![Admin user creation with control on mail](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/admin_user_creation_control_on_mail.webm)
+
+- ![Admin user creation](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/admin_user_creation.webm)
+
+- ![User document show detail](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/user_document_show_details.webm)
+
+
 
 #### Login
 ![Login page](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/FirstSwingApp_Login.png)
