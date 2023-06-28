@@ -2,7 +2,7 @@
 
 Bonjour Marwa,
 
-Voici le rendu de notre application de gesion d'une base de donnéé universitaire.
+Voici le rendu de notre application de gesion d'une librairie universitaire.
 
 ### Installation
 
