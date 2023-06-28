@@ -8,11 +8,11 @@ Voici le rendu de notre application de gesion d'une base de donnéé universitai
 
 Pour la telecharger, tu as plusieurs solutions:
 
-  1) si tu as git installé, le plus simple est de cloner ce depot avec la commande suivante:
+  1) Si tu as git installé, le plus simple est de cloner ce depot avec la commande suivante:
 
        `git clone https:./github.com/alkaloidbit/FirstSwingApplication`
 
-     Sinon, clique sur le bouton vert code ci dessus, puis "download zip"
+     Sinon, tu peux telecharger le [zip](https://https://github.com/alkaloidbit/FirstSwingApplication/archive/refs/heads/main.zip) ici
 
      A la racine du dossier FirstSwingApplication, tu trouveras un dossier sql contenant le script de
 
