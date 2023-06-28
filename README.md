@@ -8,23 +8,22 @@ Voici le rendu de notre application de gesion d'une base de donnéé universitai
 
 Pour la telecharger, tu as plusieurs solutions:
 
-  1) Si tu as git installé, le plus simple est de cloner ce depot avec la commande suivante:
+1. Si tu as git installé, le plus simple est de cloner ce depot avec la commande suivante:
+    ```sh
+    git clone https:./github.com/alkaloidbit/FirstSwingApplication`
+    ```
 
-       `git clone https:./github.com/alkaloidbit/FirstSwingApplication`
+    Sinon, tu peux telecharger le [zip](https://https://github.com/alkaloidbit/FirstSwingApplication/archive/refs/heads/main.zip) ici
 
-     Sinon, tu peux telecharger le [zip](https://https://github.com/alkaloidbit/FirstSwingApplication/archive/refs/heads/main.zip) ici
 
-     A la racine du dossier FirstSwingApplication, tu trouveras un dossier sql contenant le script de
+2. A la racine du dossier FirstSwingApplication, tu trouveras un dossier sql contenant le script `install_db.sql` de creation de la base de donnée, ainsi qu'un script `fixtures.sql` qui va peupler la base avec un jeu de donnees de test. Importe / execute ces deux scripts.
 
-     creation de la base de donnee, ainsi qu'un script fixtures.sql qui va
+3. Une fois la base installée, lance intellij, puis "File" / "Open" et choisi le
+   dossier que tu as extrait precedement. Ensuite, ouvre le fichier `Utilities/ConnectionToBDD.java` et renseigne les varibles url, user et password avec les valeurs correspondantes a ton SGBD
 
-     peupler la base avec un jeu de donnees de test. Une fois la base installée,
-
-     lance intellij, puis "File" / "Open" et choisi le dossier que tu as extrait
-     
-     precedement.
-
+4. Lance le programme avec le bouton `run`
 ### Usage
+
 
 Ci-dessous les liens vers les diagrammes UML et vers le MCD.
 

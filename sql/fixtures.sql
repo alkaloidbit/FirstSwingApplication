@@ -6,6 +6,8 @@ INSERT INTO `user` (`id_user`, `is_admin`, `first_name`, `last_name`, `email`, `
 INSERT INTO `user` (`id_user`, `is_admin`, `first_name`, `last_name`, `email`, `password`) VALUES (NULL, 0, 'Clive', 'Roberts', 'cliveroberts@ucsql.com', 'DzS/wHe/Jw2uw/bCL3HGzMsdYDSDR7kHcx/8Yb2Jqd8=');
 INSERT INTO `user` (`id_user`, `is_admin`, `first_name`, `last_name`, `email`, `password`) VALUES (NULL, 1, 'fred', 'oudjoudi', 'fo', 'DzS/wHe/Jw2uw/bCL3HGzMsdYDSDR7kHcx/8Yb2Jqd8=');
 INSERT INTO `user` (`id_user`, `is_admin`, `first_name`, `last_name`, `email`, `password`) VALUES (NULL, 0, 'Clive', 'Roberts', 'cr', 'DzS/wHe/Jw2uw/bCL3HGzMsdYDSDR7kHcx/8Yb2Jqd8=');
+INSERT INTO `user` (`id_user`, `is_admin`, `first_name`, `last_name`, `email`, `password`) VALUES (NULL, 1, 'Marwa', 'BenMBarek', 'marwa_admin@mail.com', 'DzS/wHe/Jw2uw/bCL3HGzMsdYDSDR7kHcx/8Yb2Jqd8=');
+INSERT INTO `user` (`id_user`, `is_admin`, `first_name`, `last_name`, `email`, `password`) VALUES (NULL, 0, 'Marwa', 'BenMBarek', 'marwa_user@mail.com', 'DzS/wHe/Jw2uw/bCL3HGzMsdYDSDR7kHcx/8Yb2Jqd8=');
 
 INSERT INTO `edition` (`id_edition`, `name`) VALUES (NULL, 'Hoboken, NJ : John Wiley & Sons, Inc.');
 INSERT INTO `genre` (`id_genre`, `name`) VALUES (NULL, 'For dummies');
