@@ -32,7 +32,7 @@ public class DocumentsSearchPage extends JFrame {
     private JLabel lblInfo;
     private JComboBox<Edition> cbEdtion;
     private JLabel lblAuteur;
-    private JComboBox cbAuteur;
+//    private JComboBox cbAuteur;
     private JPanel pAuthor;
     private JTextField tfAuthor;
     private JButton btnAuthor;
@@ -142,9 +142,9 @@ public class DocumentsSearchPage extends JFrame {
         AuthorDAO authorDAO = new AuthorDAO();
         authorsList = authorDAO.findAll();
         // Injection dans le combobox
-        for (Author aut : authorsList) {
-            cbAuteur.addItem(aut);
-        }
+//        for (Author aut : authorsList) {
+//            cbAuteur.addItem(aut);
+//        }
         // Injection des auteur dans la jList auteur
         DefaultListModel<Author> autModel = new DefaultListModel<Author>();
         autModel.addAll(authorsList);
@@ -251,7 +251,7 @@ public class DocumentsSearchPage extends JFrame {
                     Author resultCreateAut = authorDAO1.create(authorView);
 
                     authorsList.add(resultCreateAut);
-                    cbAuteur.addItem(resultCreateAut);
+//                    cbAuteur.addItem(resultCreateAut);
                     autModel.addElement(resultCreateAut);
                     lstAuthors.setModel(autModel);
                 }
@@ -514,7 +514,7 @@ public class DocumentsSearchPage extends JFrame {
         tfYear.setText("");
         lblDocIdValue.setText("");
         autModelDoc.removeAllElements();
-        cbAuteur.setSelectedItem(cbAuteur.getItemAt(0));
+//        cbAuteur.setSelectedItem(cbAuteur.getItemAt(0));
         cbEdtion.setSelectedItem(cbEdtion.getItemAt(0));
         cbGenre.setSelectedItem(cbGenre.getItemAt(0));
 
