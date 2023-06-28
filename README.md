@@ -24,6 +24,12 @@ Pour la telecharger, tu as plusieurs solutions:
 4. Lance le programme avec le bouton `run`
 ### Usage
 
+#### Login
+![Login page](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/FirstSwingApp_Login.png)
+
+#### Fenetre principale
+![Fenetre
+principale](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/FirstSwingApp_Main.png)
 
 Ci-dessous les liens vers les diagrammes UML et vers le MCD.
 
