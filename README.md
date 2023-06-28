@@ -45,5 +45,8 @@ Ci-dessous les liens vers les diagrammes UML et vers le MCD.
 
 - [Diagramme de classe 3](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/diagrams/Diagramme%20de%20classes%203.pdf)
 
+# Projet SQL
 
 Les [40 requetes sql](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/sql/fourtyqueries.sql)
+
+Les [Vues](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/sql/vues.sql)
