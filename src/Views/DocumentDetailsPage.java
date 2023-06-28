@@ -28,14 +28,14 @@ public class DocumentDetailsPage extends JFrame {
         lblYearValue.setText(String.valueOf(doc.getYear()));
         String authors = "";
         for (Author author : doc.getAuthors()){
-            authors += author.getFirst_name() + " " + author.getFirst_name() + " / ";
+            authors += author.getFirst_name() + " " + author.getFirst_name() + ", ";
         }
         lblAuthorValue.setText(authors);
         lblEditionValue.setText(doc.getEdition().getName());
-        lblGenre.setText(doc.getGenre().getName());
+        lblGenreValue.setText(doc.getGenre().getName());
         setContentPane(panelOut);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(400, 400);
+        setSize(800, 400);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 

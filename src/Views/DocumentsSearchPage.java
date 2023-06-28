@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 public class DocumentsSearchPage extends JFrame {
     private JLabel lblDocSearch;
@@ -55,7 +56,7 @@ public class DocumentsSearchPage extends JFrame {
     private JLabel lblUserPass;
     private JLabel lblUserAdmin;
     private JTextField tfEmail;
-    private JTextField tfUserPass;
+    private JTextField pfUserPass;
     private JComboBox cbAdmin;
     private JPanel pUser3;
     private JButton btnUserCreate;
@@ -79,6 +80,8 @@ public class DocumentsSearchPage extends JFrame {
     private JTextField tfGenre;
     private JButton btnGenre;
     private JLabel lblGenre;
+    private JLabel lblFieldsInfo;
+    private JLabel lblFieldsInfoUser;
 
     private static ArrayList<Author> authorsList;
     private static ArrayList<Document> documentsList;
@@ -103,6 +106,7 @@ public class DocumentsSearchPage extends JFrame {
         model.addColumn("Nb de pages");
         model.addColumn("Année");
         tbDocuments.setModel(model);
+
 
         // Recherche dans la BDD
         DocumentDAO documentDAO = new DocumentDAO();
@@ -182,6 +186,7 @@ public class DocumentsSearchPage extends JFrame {
                     lblInfo.setText("Informations incomplètes");
                 }
                 refreshListDocuments(model, documentDAO);
+                emptyDocumentFields(autModelDoc);
             }
         });
 
@@ -199,6 +204,7 @@ public class DocumentsSearchPage extends JFrame {
                     documentDAO1.update(document);
                 }
                 refreshListDocuments(model, documentDAO);
+                emptyDocumentFields(autModelDoc);
             }
         });
 
@@ -216,16 +222,14 @@ public class DocumentsSearchPage extends JFrame {
                     documentDAO1.delete(document);
                 }
                 refreshListDocuments(model, documentDAO);
+                emptyDocumentFields(autModelDoc);
             }
         });
-        // Vider les champs texte
+        // Vider les champs document
         btnDocClear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tfTitle.setText("");
-                tfDocNbPages.setText("");
-                tfYear.setText("");
-                lblDocIdValue.setText("");
+                emptyDocumentFields(autModelDoc);
             }
         });
         // Fonction de création d'auteur
@@ -233,23 +237,17 @@ public class DocumentsSearchPage extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Author authorView = new Author();
-                String[] authorNames = tfAuthor.getText().split(" ");
-                authorView.setFirst_name(authorNames[0]);
-                authorView.setLast_name(authorNames[1]);
+                if(tfAuthor.getText().contains(" ")){
+                    String[] authorNames = tfAuthor.getText().split(" ");
+                    authorView.setFirst_name(authorNames[0]);
+                    authorView.setLast_name(authorNames[1]);
+                }
+                else{
+                    authorView.setFirst_name(tfAuthor.getText());
+                    authorView.setLast_name(" ");
+                }
                 AuthorDAO authorDAO1 = new AuthorDAO();
                 Author resultCreateAut = authorDAO1.create(authorView);
-                // Mise à jour DataController
-                // DatasController dce = new DatasController();
-                // dce.addAuthorToCombo(authorView);
-                // Actualisation du combo
-                /*ArrayList<Author> statComAut = dce.getListAuthorCombo();
-                for (int i=0; i<statComAut.size()-1; i++) {
-                    cbAuteur.removeItemAt(0);
-                }
-                lstAuthors.removeAll();
-                for (Author aut : dce.getListAuthorCombo()) {
-                    cbAuteur.addItem(aut);
-                }*/
 
                 authorsList.add(resultCreateAut);
                 cbAuteur.addItem(resultCreateAut);
@@ -265,18 +263,6 @@ public class DocumentsSearchPage extends JFrame {
                 editionView.setName(tfEdition.getText());
                 EditionDAO editionDAO1 = new EditionDAO();
                 Edition resultCreateEdition = editionDAO1.create(editionView);
-                // Mise à jour DataController
-                /*DatasController dce = new DatasController();
-                dce.addEditionToCombo(editionView);
-                // Actualisation du combo
-                ArrayList<Edition> statComEd = dce.getListEditionCombo();
-                for (int i=0; i<statComEd.size()-1; i++) {
-                    cbEdtion.removeItemAt(0);
-                }
-
-                for (Edition ed : dce.getListEditionCombo()) {
-                    cbEdtion.addItem(ed);
-                }*/
                 cbEdtion.addItem(editionView);
             }
         });
@@ -326,7 +312,10 @@ public class DocumentsSearchPage extends JFrame {
         modelU.addColumn("Prénom");
         modelU.addColumn("Email");
         modelU.addColumn("Admin");
+        //String[] header = {"Nom", "Prénom", "Email", "Admin"};
+
         tbUsers.setModel(modelU);
+
         // Recherche dans la BDD
         UserDAO userDAO = new UserDAO();
         // Récupération de l'ensemble des utilisateurs pour affichage dans la jtable
@@ -367,6 +356,7 @@ public class DocumentsSearchPage extends JFrame {
                     lblInfo.setText("Informations incomplètes");
                 }
                 refreshListUsers( modelU,  userDAO);
+                emptyUserFields();
             }
         });
         // Mettre à jour utilisateurs
@@ -385,6 +375,7 @@ public class DocumentsSearchPage extends JFrame {
                     userDAO1.update(user);
                 }
                 refreshListUsers( modelU,  userDAO);
+                emptyUserFields();
             }
         });
 
@@ -404,17 +395,14 @@ public class DocumentsSearchPage extends JFrame {
                     userDAO1.delete(user);
                 }
                 refreshListUsers( modelU,  userDAO);
+                emptyUserFields();
             }
         });
-        // Vider les champs user texte
+        // Vider les champs user
         btnUserClear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tfEmail.setText("");
-                tfUserPass.setText("");
-                tfUserFirstName.setText("");
-                tfUserLastName.setText("");
-                lblUserIdValue.setText("");
+                emptyUserFields();
             }
         });
 
@@ -434,7 +422,7 @@ public class DocumentsSearchPage extends JFrame {
                 tfUserLastName.setText(user.getLast_name());
                 lblUserIdValue.setText(String.valueOf(user.getId()));
                 cbAdmin.setSelectedItem(user.getId());
-                tfUserPass.setText(user.getPassword());
+                pfUserPass.setText(user.getPassword());
 
             }
         });
@@ -509,6 +497,18 @@ public class DocumentsSearchPage extends JFrame {
 
     }
 
+    // Vider les champs document
+    public void emptyDocumentFields(DefaultListModel<Author> autModelDoc){
+        tfTitle.setText("");
+        tfDocNbPages.setText("");
+        tfYear.setText("");
+        lblDocIdValue.setText("");
+        autModelDoc.removeAllElements();
+        cbAuteur.setSelectedItem(cbAuteur.getItemAt(0));
+        cbEdtion.setSelectedItem(cbEdtion.getItemAt(0));
+        cbGenre.setSelectedItem(cbGenre.getItemAt(0));
+
+    }
 
 
 
@@ -526,12 +526,28 @@ public class DocumentsSearchPage extends JFrame {
         else{
             viewUser.setId(Integer.parseInt(lblUserIdValue.getText()));
         }
-        viewUser.setPassword(tfUserPass.getText());
+
+        viewUser.setPassword(pfUserPass.getText());
         viewUser.setEmail(tfEmail.getText());
         viewUser.setFirst_name(tfUserFirstName.getText());
         viewUser.setLast_name(tfUserLastName.getText());
         viewUser.setIs_admin((Integer) cbAdmin.getSelectedItem());
         return viewUser;
+
+        /* if(verifyFieldsContent(pfUserPass.getText(),"password")
+                && verifyFieldsContent(tfEmail.getText(),"email")
+                && verifyFieldsContent(tfUserFirstName.getText(),"text")
+                && verifyFieldsContent(tfUserLastName.getText(),"text")){
+            viewUser.setPassword(pfUserPass.getText());
+            viewUser.setEmail(tfEmail.getText());
+            viewUser.setFirst_name(tfUserFirstName.getText());
+            viewUser.setLast_name(tfUserLastName.getText());
+            viewUser.setIs_admin((Integer) cbAdmin.getSelectedItem());
+            return viewUser;
+        }
+        return null;
+        */
+
     }
 
     // Actualiser l'affichage de la table utilisateurs
@@ -548,6 +564,77 @@ public class DocumentsSearchPage extends JFrame {
             modelU.addRow(new Object[]{user.getLast_name(), user.getFirst_name(), user.getEmail(),user.getIs_admin()});
         }
     }
+    // Vider les champs utilisateur
+    public void emptyUserFields(){
+        tfEmail.setText("");
+        pfUserPass.setText("");
+        tfUserFirstName.setText("");
+        tfUserLastName.setText("");
+        lblUserIdValue.setText("");
+        cbAdmin.setSelectedItem(cbAdmin.getItemAt(0));
+    }
 
+    /*********************************************************************************************** FONCTIONS USERS ET DOCUMENTS *********************************************************************************/
+
+    public boolean verifyFieldsContent(String filedContent, String fieldType){
+        switch(fieldType){
+            case "password":
+                boolean okPassword = Pattern.compile("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$").matcher(filedContent).matches();
+                if(okPassword == true){
+                    return true;
+                }
+                else{
+                    lblFieldsInfoUser.setText("Le mot de passe doit contenir au moins huit caractères, dont au moins une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.");
+                    return false;
+                }
+
+            case "text":
+                boolean okText = Pattern.compile("[a-zA-Z_]").matcher(filedContent).matches();
+                if(okText == true){
+                    return true;
+                }
+                else{
+                    lblFieldsInfoUser.setText("Email non conforme");
+                    return false;
+                }
+
+            case "textNum":
+                boolean okTextNum = Pattern.compile("[a-zA-Z_0-9]").matcher(filedContent).matches();
+                if(okTextNum == true){
+                    return true;
+                }
+                else{
+                    lblFieldsInfoUser.setText("Email non conforme");
+                    return false;
+                }
+
+
+            case "email":
+                boolean okEmail = Pattern.compile("^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$").matcher(filedContent).matches();
+                if(okEmail == true){
+                    return true;
+                }
+                else{
+                    lblFieldsInfoUser.setText("Email non conforme");
+                    return false;
+                }
+
+
+            case "number":
+                boolean okNumber = filedContent.chars().allMatch(Character::isDigit);
+                if(okNumber == true){
+                    return true;
+                }
+                else{
+                    lblFieldsInfoUser.setText("Valeur numérique non conforme");
+                    return false;
+                }
+
+            default:
+                System.out.println("Erreur fonction verifyFieldsContent");
+                return false;
+
+        }
+    }
 
 }
