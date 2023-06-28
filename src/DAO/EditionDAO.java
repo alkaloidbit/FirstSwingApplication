@@ -85,7 +85,7 @@ public class EditionDAO extends DAO<Edition> {
                             ResultSet.TYPE_SCROLL_INSENSITIVE,
                             ResultSet.CONCUR_UPDATABLE
                     ).executeUpdate(
-                            "UPDATE edition SET name = '"+ obj.getName() +"' "+
+                            "UPDATE edition SET name = \""+ obj.getName() +"\" "+
                                                 " Where id_edition = " + obj.getId() + ""
                     );
             obj = this.find(obj.getId());

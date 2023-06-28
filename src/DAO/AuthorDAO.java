@@ -90,8 +90,8 @@ public class AuthorDAO extends DAO<Author> {
                             ResultSet.TYPE_SCROLL_INSENSITIVE,
                             ResultSet.CONCUR_UPDATABLE
                     ).executeUpdate(
-                            "UPDATE author SET first_name = '"+ obj.getFirst_name() +"', " +
-                                              " last_name = '" + obj.getLast_name() + "' "+
+                            "UPDATE author SET first_name = \""+ obj.getFirst_name() +"\", " +
+                                              " last_name = \"" + obj.getLast_name() + "\" "+
                                                 " Where id_author = " + obj.getId() + ""
                     );
             obj = this.find(obj.getId());

@@ -85,8 +85,8 @@ public class GenreDAO extends DAO<Genre> {
                             ResultSet.TYPE_SCROLL_INSENSITIVE,
                             ResultSet.CONCUR_UPDATABLE
                     ).executeUpdate(
-                            "UPDATE genre SET name = '"+ obj.getName() +"' "+
-                                                " Where id_genre = " + obj.getId() + ""
+                            "UPDATE genre SET name = \""+ obj.getName() +"\""
+                                 +" WHERE id_genre = " + obj.getId()
                     );
             obj = this.find(obj.getId());
         } catch (SQLException e) {

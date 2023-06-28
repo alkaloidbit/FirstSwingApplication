@@ -185,8 +185,8 @@ public class DocumentDAO extends DAO<Document> {
                             ResultSet.TYPE_SCROLL_INSENSITIVE,
                             ResultSet.CONCUR_UPDATABLE)
                     .executeUpdate(
-                            "UPDATE document SET title = '" + obj.getTitle() + "'," +
-                                    " pages_nbr = '" + obj.getPages_nbr() + "', " +
+                            "UPDATE document SET title = \"" + obj.getTitle() + "\"," +
+                                    " pages_nbr = \"" + obj.getPages_nbr() + "\", " +
                                     " id_edition = '" + obj.getEdition().getId() + "', " +
                                     " id_genre = '" + obj.getGenre().getId() + "', " +
                                     " year = '" + obj.getYear() + "'" +

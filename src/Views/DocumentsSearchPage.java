@@ -236,45 +236,53 @@ public class DocumentsSearchPage extends JFrame {
         btnAuthor.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Author authorView = new Author();
-                if(tfAuthor.getText().contains(" ")){
-                    String[] authorNames = tfAuthor.getText().split(" ");
-                    authorView.setFirst_name(authorNames[0]);
-                    authorView.setLast_name(authorNames[1]);
-                }
-                else{
-                    authorView.setFirst_name(tfAuthor.getText());
-                    authorView.setLast_name(" ");
-                }
-                AuthorDAO authorDAO1 = new AuthorDAO();
-                Author resultCreateAut = authorDAO1.create(authorView);
+                if (!tfAuthor.getText().isEmpty()){
+                    Author authorView = new Author();
+                    if(tfAuthor.getText().contains(" ")){
+                        String[] authorNames = tfAuthor.getText().split(" ");
+                        authorView.setFirst_name(authorNames[0]);
+                        authorView.setLast_name(authorNames[1]);
+                    }
+                    else{
+                        authorView.setFirst_name(tfAuthor.getText());
+                        authorView.setLast_name(" ");
+                    }
+                    AuthorDAO authorDAO1 = new AuthorDAO();
+                    Author resultCreateAut = authorDAO1.create(authorView);
 
-                authorsList.add(resultCreateAut);
-                cbAuteur.addItem(resultCreateAut);
-                autModel.addElement(resultCreateAut);
-                lstAuthors.setModel(autModel);
+                    authorsList.add(resultCreateAut);
+                    cbAuteur.addItem(resultCreateAut);
+                    autModel.addElement(resultCreateAut);
+                    lstAuthors.setModel(autModel);
+                }
+
             }
         });
         // Fonction de création d'edition
         btnEdition.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Edition editionView = new Edition();
-                editionView.setName(tfEdition.getText());
-                EditionDAO editionDAO1 = new EditionDAO();
-                Edition resultCreateEdition = editionDAO1.create(editionView);
-                cbEdtion.addItem(editionView);
+                if (!tfEdition.getText().isEmpty()) {
+                    Edition editionView = new Edition();
+                    editionView.setName(tfEdition.getText());
+                    EditionDAO editionDAO1 = new EditionDAO();
+                    Edition resultCreateEdition = editionDAO1.create(editionView);
+                    cbEdtion.addItem(editionView);
+                }
             }
         });
         // Fonction de création de genre
         btnGenre.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Genre genreView = new Genre();
-                genreView.setName(tfGenre.getText());
-                GenreDAO genreDAO = new GenreDAO();
-                genreView = genreDAO.create(genreView);
-                cbGenre.addItem(genreView);
+                if (!tfGenre.getText().isEmpty()){
+                    Genre genreView = new Genre();
+                    genreView.setName(tfGenre.getText());
+                    GenreDAO genreDAO = new GenreDAO();
+                    genreView = genreDAO.create(genreView);
+                    cbGenre.addItem(genreView);
+                }
+
             }
         });
         // Chargement des champs doc lorsqu'une ligne est sélectionnée
@@ -370,7 +378,10 @@ public class DocumentsSearchPage extends JFrame {
                 else if(user.getId()== 0){
                     lblInfo.setText("L'id n'est pas renseigné");
                 }
-                else{
+                else if (user.getPassword()=="") {
+                    UserDAO userDAO1 = new UserDAO();
+                    userDAO1.updateWithoutPassword(user);
+                } else{
                     UserDAO userDAO1 = new UserDAO();
                     userDAO1.update(user);
                 }
@@ -422,7 +433,6 @@ public class DocumentsSearchPage extends JFrame {
                 tfUserLastName.setText(user.getLast_name());
                 lblUserIdValue.setText(String.valueOf(user.getId()));
                 cbAdmin.setSelectedItem(user.getId());
-                pfUserPass.setText(user.getPassword());
 
             }
         });
@@ -455,7 +465,7 @@ public class DocumentsSearchPage extends JFrame {
     }
     /*********************************************************************************************** FONCTIONS DOCUMENTS *********************************************************************************/
 
-    // Fonction qui permet de les récupérer les valeurs de champs afin de les envoyer vers la BDD
+    // Fonction qui permet de récupérer les valeurs de champs afin de les envoyer vers la BDD
     public Document getTextFieldsValues(){
         // Création d'un objet document qui recevra les valeurs des champs documents
         Document viewDoc = new Document();

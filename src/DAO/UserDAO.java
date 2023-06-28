@@ -77,7 +77,7 @@ public class UserDAO extends DAO<User> {
             ResultSet results = connect
                     .createStatement()
                     .executeQuery(
-                            "SELECT * FROM user WHERE first_name LIKE '%" + searchParam + "%' OR last_name LIKE '%" + searchParam +"%'" 
+                            "SELECT * FROM user WHERE first_name LIKE \"%" + searchParam + "%\" OR last_name LIKE \"%" + searchParam +"%\""
                     );
             while ( results.next() ) {
                 User user = new User();
@@ -191,13 +191,32 @@ public class UserDAO extends DAO<User> {
                     ResultSet.CONCUR_UPDATABLE
                 ).executeUpdate(
                     "UPDATE user SET is_admin = '"+obj.getIs_admin()+"', " +
-                                    " first_name = '" + obj.getFirst_name() + "', " +
-                                    " last_name = '" + obj.getLast_name() + "', " +
+                                    " first_name = \"" + obj.getFirst_name() + "\", " +
+                                    " last_name = \"" + obj.getLast_name() + "\", " +
                                     " email = '" + obj.getEmail() + "', " +
                                     " password = '" + obj.getPassword() + "'" +
                                 " WHERE id_user = " + obj.getId() + ""
                 );
                 obj = this.find(obj.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return obj;
+    }
+    public User updateWithoutPassword(User obj) {
+        try {
+            this.connect
+                    .createStatement(
+                            ResultSet.TYPE_SCROLL_INSENSITIVE,
+                            ResultSet.CONCUR_UPDATABLE
+                    ).executeUpdate(
+                            "UPDATE user SET is_admin = '"+obj.getIs_admin()+"', " +
+                                    " first_name = \"" + obj.getFirst_name() + "\", " +
+                                    " last_name = \"" + obj.getLast_name() + "\", " +
+                                    " email = '" + obj.getEmail() + "', " +
+                                    " WHERE id_user = " + obj.getId() + ""
+                    );
+            obj = this.find(obj.getId());
         } catch (SQLException e) {
             e.printStackTrace();
         }
