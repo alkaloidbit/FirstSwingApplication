@@ -537,17 +537,16 @@ public class DocumentsSearchPage extends JFrame {
             viewUser.setId(Integer.parseInt(lblUserIdValue.getText()));
         }
 
-        viewUser.setPassword(pfUserPass.getText());
+        /* viewUser.setPassword(pfUserPass.getText());
         viewUser.setEmail(tfEmail.getText());
         viewUser.setFirst_name(tfUserFirstName.getText());
         viewUser.setLast_name(tfUserLastName.getText());
         viewUser.setIs_admin((Integer) cbAdmin.getSelectedItem());
-        return viewUser;
+        return viewUser; */
 
-        /* if(verifyFieldsContent(pfUserPass.getText(),"password")
-                && verifyFieldsContent(tfEmail.getText(),"email")
-                && verifyFieldsContent(tfUserFirstName.getText(),"text")
-                && verifyFieldsContent(tfUserLastName.getText(),"text")){
+            if(verifyFieldsContent(tfEmail.getText(),"email")) {
+                // && verifyFieldsContent(tfUserFirstName.getText(),"text")
+                // && verifyFieldsContent(tfUserLastName.getText(),"text")){
             viewUser.setPassword(pfUserPass.getText());
             viewUser.setEmail(tfEmail.getText());
             viewUser.setFirst_name(tfUserFirstName.getText());
@@ -556,7 +555,6 @@ public class DocumentsSearchPage extends JFrame {
             return viewUser;
         }
         return null;
-        */
 
     }
 
@@ -604,7 +602,7 @@ public class DocumentsSearchPage extends JFrame {
                     return true;
                 }
                 else{
-                    lblFieldsInfoUser.setText("Email non conforme");
+                    lblFieldsInfoUser.setText("Texte non conforme");
                     return false;
                 }
 
@@ -614,7 +612,7 @@ public class DocumentsSearchPage extends JFrame {
                     return true;
                 }
                 else{
-                    lblFieldsInfoUser.setText("Email non conforme");
+                    lblFieldsInfoUser.setText("valeur alphanum non conforme");
                     return false;
                 }
 
