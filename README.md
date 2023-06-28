@@ -24,7 +24,10 @@ Pour la telecharger, tu as plusieurs solutions:
 4. Lance le programme avec le bouton `run`
 ### Usage
 
-## Instructions 
+## Instructions Videos
+
+En cliquant sur les liens ci-dessous, tu pourra telecharger une video de
+demonstration des fonctionnalites principale de l'application.
 
 - ![Login Page](https://github.com/alkaloidbit/FirstSwingApplication/blob/main/docs/login.webm)
 
